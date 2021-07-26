@@ -1,5 +1,6 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
+import static gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGateway.deoctothorpe;
 import static java.lang.String.join;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
@@ -78,7 +79,7 @@ public class LhsLighthouseRpcGatewayListManifest
       parameters.add("api^manifest^list");
       parameters.add("param^FILE^literal^" + file());
       parameters.add("param^IENS^literal^" + iens().orElse(""));
-      parameters.add("param^FIELDS^literal^" + join(";", fields()));
+      parameters.add("param^FIELDS^literal^" + join(";", deoctothorpe(fields())));
       parameters.add(
           "param^FLAGS^literal^P"
               + flags().stream().map(ListManifestFlags::flag).collect(joining("")));

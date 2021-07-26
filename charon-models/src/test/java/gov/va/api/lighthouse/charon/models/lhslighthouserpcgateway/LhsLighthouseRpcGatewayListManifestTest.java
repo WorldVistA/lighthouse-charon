@@ -123,7 +123,7 @@ public class LhsLighthouseRpcGatewayListManifestTest {
         LhsLighthouseRpcGatewayListManifest.Request.builder()
             .file("2")
             .iens(Optional.of("1"))
-            .fields(List.of(".01", ".3121*"))
+            .fields(List.of("#.01", ".3121*"))
             .flags(
                 List.of(
                     LhsLighthouseRpcGatewayListManifest.Request.ListManifestFlags

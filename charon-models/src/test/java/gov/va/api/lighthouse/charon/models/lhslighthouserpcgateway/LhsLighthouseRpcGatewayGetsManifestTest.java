@@ -120,7 +120,7 @@ public class LhsLighthouseRpcGatewayGetsManifestTest {
         LhsLighthouseRpcGatewayGetsManifest.Request.builder()
             .file("2")
             .iens("1")
-            .fields(List.of(".01", ".3121*"))
+            .fields(List.of("#.01", ".3121*"))
             .flags(
                 List.of(
                     LhsLighthouseRpcGatewayGetsManifest.Request.GetsManifestFlags.OMIT_NULL_VALUES,

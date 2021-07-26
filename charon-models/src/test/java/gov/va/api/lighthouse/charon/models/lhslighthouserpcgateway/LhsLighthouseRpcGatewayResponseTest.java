@@ -1,14 +1,45 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
+import static gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.UNSPECIFIED_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.FilemanEntry;
+import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.Results;
+import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.ResultsError;
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.UnexpectedVistaValue;
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.Values;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class LhsLighthouseRpcGatewayResponseTest {
+
+  @Test
+  void collectErrors() {
+    assertThat(LhsLighthouseRpcGatewayResponse.builder().build().collectErrors()).isEmpty();
+    assertThat(
+            LhsLighthouseRpcGatewayResponse.builder()
+                .resultsByStation(
+                    Map.of("1", Results.builder().build(), "2", Results.builder().build()))
+                .build()
+                .collectErrors())
+        .isEmpty();
+    assertThat(
+            LhsLighthouseRpcGatewayResponse.builder()
+                .resultsByStation(
+                    Map.of(
+                        "1",
+                        Results.builder().build(),
+                        "2",
+                        Results.builder().error(ResultsError.builder().build()).build(),
+                        "3",
+                        Results.builder()
+                            .error(ResultsError.builder().error("three").build())
+                            .build()))
+                .build()
+                .collectErrors())
+        .isEqualTo(Map.of("2", UNSPECIFIED_ERROR, "3", "three"));
+  }
 
   @SuppressWarnings("OptionalGetWithoutIsPresent")
   @Test

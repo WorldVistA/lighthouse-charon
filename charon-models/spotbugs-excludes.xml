@@ -9,6 +9,7 @@
       <Class name="gov.va.api.lighthouse.charon.models.vprgetpatientdata.Vitals"/>
       <Class name="gov.va.api.lighthouse.charon.models.vprgetpatientdata.Labs"/>
       <Class name="gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse$FilemanEntry"/>
+      <Class name="gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse$ResultsError"/>
     </Or>
     <Or>
       <Method name="equals"/>

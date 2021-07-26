@@ -1,6 +1,7 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcResponse;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,28 @@ import org.apache.commons.lang3.StringUtils;
     fieldVisibility = JsonAutoDetect.Visibility.ANY,
     isGetterVisibility = JsonAutoDetect.Visibility.NONE)
 public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
+
+  public static final String UNSPECIFIED_ERROR = "unspecified error";
+
   private Map<String, Results> resultsByStation;
+
+  /**
+   * Return an empty map if there are no errors, otherwise return a simplified error message per
+   * station. (key: station, value: message).
+   */
+  public Map<String, String> collectErrors() {
+    Map<String, String> errors = new HashMap<>(resultsByStation().size());
+    resultsByStation()
+        .forEach(
+            (station, result) -> {
+              if (result.hasError()) {
+                String message =
+                    result.error().error() == null ? UNSPECIFIED_ERROR : result.error().error();
+                errors.put(station, message);
+              }
+            });
+    return errors;
+  }
 
   /** Lazy Initialization. */
   public Map<String, Results> resultsByStation() {
@@ -128,10 +150,13 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
       fieldVisibility = JsonAutoDetect.Visibility.ANY,
       isGetterVisibility = JsonAutoDetect.Visibility.NONE)
   public static class Results {
-
-    // ToDo add metadata
-
     private List<FilemanEntry> results;
+    private ResultsError error;
+
+    @JsonIgnore
+    public boolean hasError() {
+      return error != null;
+    }
 
     /** Lazy Initialization. */
     public List<FilemanEntry> results() {
@@ -139,6 +164,26 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
         return List.of();
       }
       return results;
+    }
+  }
+
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @JsonAutoDetect(
+      fieldVisibility = JsonAutoDetect.Visibility.ANY,
+      isGetterVisibility = JsonAutoDetect.Visibility.NONE)
+  public static class ResultsError {
+    private Map<String, String> data;
+    private String error;
+
+    /** Lazy initialization. */
+    public Map<String, String> data() {
+      if (data == null) {
+        return new HashMap<>();
+      }
+      return data;
     }
   }
 

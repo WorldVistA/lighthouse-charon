@@ -101,11 +101,20 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
     }
 
     /**
-     * Attempt to convert the internal value if present, throwing an UnexpectedVistaValue if
+     * Attempt to convert the external value if present, throwing an UnexpectedVistaValue if
      * conversion fails.
      */
     public <T> Optional<T> external(@NonNull String fieldNumber, Function<String, T> converter) {
       return convert(external(fieldNumber), fieldNumber, converter);
+    }
+
+    /**
+     * Attempt to apply the given map to the external value, throwing an UnexpectedVistaValue if
+     * value is not within the map.
+     */
+    public <T> Optional<T> external(
+        @NonNull String fieldNumber, Map<String, T> supportedEnumeratedValues) {
+      return map(external(fieldNumber), fieldNumber, supportedEnumeratedValues);
     }
 
     /** Return null of the field is missing, otherwise return the field. */
@@ -140,6 +149,30 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
     public <T> Optional<T> internal(@NonNull String fieldNumber, Function<String, T> converter) {
       return convert(internal(fieldNumber), fieldNumber, converter);
     }
+
+    /**
+     * Attempt to apply the given map to the internal value, throwing an UnexpectedVistaValue if
+     * value is not within the map.
+     */
+    public <T> Optional<T> internal(
+        @NonNull String fieldNumber, Map<String, T> supportedEnumeratedValues) {
+      return map(internal(fieldNumber), fieldNumber, supportedEnumeratedValues);
+    }
+
+    private <T> Optional<T> map(
+        Optional<String> fieldValue, String fieldNumber, Map<String, T> supportedEnumeratedValues) {
+      if (fieldValue.isEmpty()) {
+        return Optional.empty();
+      }
+      var mapping = supportedEnumeratedValues.get(fieldValue.get());
+      if (mapping == null) {
+        throw new UnexpectedVistaValue(
+            fieldNumber,
+            fieldValue.get(),
+            "Supported enumeration values: " + supportedEnumeratedValues);
+      }
+      return Optional.of(mapping);
+    }
   }
 
   @Data
@@ -150,6 +183,7 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
       fieldVisibility = JsonAutoDetect.Visibility.ANY,
       isGetterVisibility = JsonAutoDetect.Visibility.NONE)
   public static class Results {
+
     private List<FilemanEntry> results;
     private ResultsError error;
 

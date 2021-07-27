@@ -60,9 +60,21 @@ class LhsLighthouseRpcGatewayResponseTest {
     assertThat(e.internal("here", Integer::valueOf).get()).isEqualTo(2);
     assertThat(e.external("here", Integer::valueOf).get()).isEqualTo(1);
 
+    e.fields().put("where", Values.of("x", "i"));
+
+    var enumeration = Map.of("i", "INTERNAL", "x", "EXTERNAL");
+    assertThat(e.internal("where", enumeration).get()).isEqualTo("INTERNAL");
+    assertThat(e.external("where", enumeration).get()).isEqualTo("EXTERNAL");
+    assertThat(e.internal("who?", enumeration)).isEmpty();
+    assertThat(e.external("who?", enumeration)).isEmpty();
+
     assertThatExceptionOfType(UnexpectedVistaValue.class)
         .isThrownBy(() -> e.internal("there", Integer::valueOf));
     assertThatExceptionOfType(UnexpectedVistaValue.class)
         .isThrownBy(() -> e.external("there", Integer::valueOf));
+
+    e.fields().put("why?!", Values.of("i", "internal"));
+    assertThatExceptionOfType(UnexpectedVistaValue.class)
+        .isThrownBy(() -> e.internal("why?!", Map.of("xWTF", "iWTF")));
   }
 }

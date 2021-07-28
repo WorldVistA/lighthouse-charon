@@ -1,6 +1,6 @@
 package gov.va.api.lighthouse.charon.api;
 
-import static io.micrometer.core.instrument.util.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;

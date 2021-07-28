@@ -9,6 +9,7 @@ import javax.annotation.processing.Generated;
 public class InsuranceCompany {
   public static final String FILE_NUMBER = "36";
   public static final String NAME = "#.01";
+  public static final String INACTIVE = "#.05"; // manually added
   public static final String ALLOW_MULTIPLE_BEDSECTIONS = "#.06";
   public static final String DIFFERENT_REVENUE_CODES_TO_USE = "#.07";
   public static final String ONE_OPT_VISIT_ON_BILL_ONLY = "#.08";

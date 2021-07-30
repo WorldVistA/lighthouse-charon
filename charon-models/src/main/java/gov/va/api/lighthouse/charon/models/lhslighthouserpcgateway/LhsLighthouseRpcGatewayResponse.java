@@ -1,5 +1,6 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcResponse;
@@ -25,8 +26,6 @@ import org.apache.commons.lang3.StringUtils;
     isGetterVisibility = JsonAutoDetect.Visibility.NONE)
 public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
 
-  public static final String UNSPECIFIED_ERROR = "unspecified error";
-
   private Map<String, Results> resultsByStation;
 
   /**
@@ -39,8 +38,7 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
         .forEach(
             (station, result) -> {
               if (result.hasError()) {
-                String message =
-                    result.error().error() == null ? UNSPECIFIED_ERROR : result.error().error();
+                String message = result.error().data().toString();
                 errors.put(station, message);
               }
             });
@@ -201,6 +199,27 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
     }
   }
 
+  /**
+   * Support deserialization of any data in 'error' field of the response by collecting into a map..
+   *
+   * <pre>
+   * Version 1
+   * {
+   *   error: message,
+   *   data: {
+   *     key: value,
+   *     key: value,
+   *     ...
+   *   }
+   * }
+   * Version 2
+   * {
+   *   code: number,
+   *   location: string,
+   *   text: string
+   * }
+   * </pre>
+   */
   @Data
   @Builder
   @NoArgsConstructor
@@ -209,8 +228,13 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
       fieldVisibility = JsonAutoDetect.Visibility.ANY,
       isGetterVisibility = JsonAutoDetect.Visibility.NONE)
   public static class ResultsError {
+    /** V1 of result error had a data field, now it has just a map of anything. */
     private Map<String, String> data;
-    private String error;
+
+    @JsonAnySetter
+    public void data(String key, String value) {
+      data().put(key, value);
+    }
 
     /** Lazy initialization. */
     public Map<String, String> data() {
@@ -218,6 +242,11 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
         return new HashMap<>();
       }
       return data;
+    }
+
+    /** Backwards compatibility for older version of structure. */
+    public String error() {
+      return data().toString();
     }
   }
 

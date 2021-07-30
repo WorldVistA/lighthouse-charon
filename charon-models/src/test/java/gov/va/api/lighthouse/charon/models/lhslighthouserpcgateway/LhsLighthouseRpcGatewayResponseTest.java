@@ -1,16 +1,19 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
-import static gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.UNSPECIFIED_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.FilemanEntry;
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.Results;
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.ResultsError;
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.UnexpectedVistaValue;
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.Values;
 import java.util.Map;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class LhsLighthouseRpcGatewayResponseTest {
 
@@ -34,11 +37,11 @@ class LhsLighthouseRpcGatewayResponseTest {
                         Results.builder().error(ResultsError.builder().build()).build(),
                         "3",
                         Results.builder()
-                            .error(ResultsError.builder().error("three").build())
+                            .error(ResultsError.builder().data(Map.of("stuff", "three")).build())
                             .build()))
                 .build()
                 .collectErrors())
-        .isEqualTo(Map.of("2", UNSPECIFIED_ERROR, "3", "three"));
+        .isEqualTo(Map.of("2", "{}", "3", "{stuff=three}"));
   }
 
   @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -76,5 +79,36 @@ class LhsLighthouseRpcGatewayResponseTest {
     e.fields().put("why?!", Values.of("i", "internal"));
     assertThatExceptionOfType(UnexpectedVistaValue.class)
         .isThrownBy(() -> e.internal("why?!", Map.of("xWTF", "iWTF")));
+  }
+
+  @ParameterizedTest
+  @ValueSource(
+      strings = {
+        """
+      {
+        "error":{
+          "error":"whoops",
+          "data": {
+            "location": "SEARCH^LHSIB",
+             "text": "-1^ICN NOT IN DATABASE"
+          }
+        }
+      }
+      """,
+        """
+      {
+        "error":{
+          "code":1,
+          "location":"SEARCH^LHSIB",
+          "text":"-1^ICN NOT IN DATABASE"
+        }
+      }
+      """
+      })
+  @SneakyThrows
+  public void supportErrorResponseVersions(String json) {
+    var mapper = new ObjectMapper();
+    var results = mapper.readValue(json, Results.class);
+    assertThat(results.hasError()).isTrue();
   }
 }

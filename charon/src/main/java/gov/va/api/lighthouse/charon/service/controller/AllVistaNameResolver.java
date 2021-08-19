@@ -1,8 +1,8 @@
 package gov.va.api.lighthouse.charon.service.controller;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
-import gov.va.api.lighthouse.charon.service.config.VistalinkProperties;
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;

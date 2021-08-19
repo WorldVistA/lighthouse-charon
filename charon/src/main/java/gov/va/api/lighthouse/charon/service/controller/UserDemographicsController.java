@@ -3,9 +3,9 @@ package gov.va.api.lighthouse.charon.service.controller;
 import static gov.va.api.lighthouse.charon.service.controller.NameResolution.noAdditionalCandidates;
 
 import gov.va.api.health.autoconfig.logging.Redact;
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
-import gov.va.api.lighthouse.charon.service.config.VistalinkProperties;
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import gov.va.api.lighthouse.charon.service.controller.VistaLinkExceptions.NameResolutionException;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;

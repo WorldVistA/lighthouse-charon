@@ -3,6 +3,8 @@ package gov.va.api.lighthouse.charon.service.config;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;

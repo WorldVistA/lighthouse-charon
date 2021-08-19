@@ -3,9 +3,9 @@ package gov.va.api.lighthouse.charon.service.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
-import gov.va.api.lighthouse.charon.service.config.VistalinkProperties;
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import gov.va.api.lighthouse.mpi.MpiConfig;
 import java.util.List;
 import java.util.function.Function;

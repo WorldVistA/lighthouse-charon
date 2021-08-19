@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.lighthouse.charon.api.RpcRequest;
 import gov.va.api.lighthouse.charon.api.RpcResponse;
-import gov.va.api.lighthouse.charon.service.config.VistalinkProperties;
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import gov.va.api.lighthouse.charon.service.controller.AllVistaNameResolver;
 import gov.va.api.lighthouse.charon.service.controller.DfnMacro;
 import gov.va.api.lighthouse.charon.service.controller.LocalDateMacro;

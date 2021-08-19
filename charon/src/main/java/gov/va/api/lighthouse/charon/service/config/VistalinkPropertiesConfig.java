@@ -2,6 +2,8 @@ package gov.va.api.lighthouse.charon.service.config;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import java.io.FileInputStream;
 import java.time.ZoneId;
 import java.time.zone.ZoneRulesException;

@@ -2,6 +2,7 @@ package gov.va.api.lighthouse.charon.service.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

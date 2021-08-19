@@ -3,10 +3,10 @@ package gov.va.api.lighthouse.charon.tests;
 import static gov.va.api.lighthouse.charon.tests.TestOptions.assumeEnabled;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
 import gov.va.api.lighthouse.charon.service.controller.DfnMacro;
 import gov.va.api.lighthouse.charon.service.controller.LocalDateMacro;
 import gov.va.api.lighthouse.charon.service.controller.MacroProcessorFactory;

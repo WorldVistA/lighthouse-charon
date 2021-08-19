@@ -3,12 +3,12 @@ package gov.va.api.lighthouse.charon.service.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcRequest;
 import gov.va.api.lighthouse.charon.api.RpcResponse;
 import gov.va.api.lighthouse.charon.api.RpcResponse.Status;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import gov.va.api.lighthouse.charon.service.config.EncyptedLoggingConfig.DisabledEncryptedLogging;
-import gov.va.api.lighthouse.charon.service.config.VistalinkProperties;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

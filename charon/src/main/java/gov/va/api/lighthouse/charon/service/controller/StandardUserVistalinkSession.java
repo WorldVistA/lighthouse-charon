@@ -4,7 +4,7 @@ import static gov.va.api.lighthouse.charon.service.controller.CharonVistaLinkMan
 import static gov.va.api.lighthouse.charon.service.controller.VistalinkSession.connectionIdentifier;
 import static java.util.stream.Collectors.toMap;
 
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.service.controller.UnrecoverableVistalinkExceptions.LoginFailure;
 import gov.va.api.lighthouse.charon.service.controller.UnrecoverableVistalinkExceptions.UnrecoverableVistalinkException;
 import gov.va.med.exception.FoundationsException;

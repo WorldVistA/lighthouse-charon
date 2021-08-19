@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
-import gov.va.api.lighthouse.charon.service.config.VistalinkProperties;
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import gov.va.api.lighthouse.charon.service.controller.VistaLinkExceptions.UnknownVista;
 import java.util.Arrays;
 import java.util.Collection;

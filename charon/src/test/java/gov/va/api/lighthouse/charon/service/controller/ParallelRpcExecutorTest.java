@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
@@ -12,7 +13,6 @@ import gov.va.api.lighthouse.charon.api.RpcRequest;
 import gov.va.api.lighthouse.charon.api.RpcResponse;
 import gov.va.api.lighthouse.charon.api.RpcResponse.Status;
 import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
 import gov.va.api.lighthouse.charon.service.controller.UnrecoverableVistalinkExceptions.LoginFailure;
 import java.util.List;
 import java.util.Optional;

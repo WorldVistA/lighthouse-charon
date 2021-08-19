@@ -1,8 +1,8 @@
 package gov.va.api.lighthouse.charon.service.controller;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
 import gov.va.api.lighthouse.charon.api.RpcRequest;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 

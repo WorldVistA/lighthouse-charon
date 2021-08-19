@@ -1,6 +1,6 @@
 package gov.va.api.lighthouse.charon.service.controller;
 
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnection;
 import java.util.stream.Collectors;
 

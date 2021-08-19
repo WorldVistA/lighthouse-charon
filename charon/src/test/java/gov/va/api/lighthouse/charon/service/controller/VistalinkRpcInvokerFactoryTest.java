@@ -6,11 +6,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails.Parameter;
 import gov.va.api.lighthouse.charon.api.RpcMetadata;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
 import gov.va.api.lighthouse.charon.service.controller.FugaziMacros.AppendXMacro;
 import gov.va.api.lighthouse.charon.service.controller.FugaziMacros.ToUpperCaseMacro;
 import gov.va.api.lighthouse.charon.service.controller.UnrecoverableVistalinkExceptions.BadRpcContext;

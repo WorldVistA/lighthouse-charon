@@ -4,8 +4,8 @@ import static gov.va.api.lighthouse.charon.service.controller.InteractiveTestSup
 import static gov.va.api.lighthouse.charon.service.controller.InteractiveTestSupport.requirePropertyValue;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
-import gov.va.api.lighthouse.charon.service.config.VistalinkProperties;
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
+import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

@@ -1,12 +1,12 @@
 package gov.va.api.lighthouse.charon.service.controller;
 
+import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
 import gov.va.api.lighthouse.charon.api.RpcRequest;
 import gov.va.api.lighthouse.charon.api.RpcResponse;
 import gov.va.api.lighthouse.charon.api.RpcResponse.Status;
-import gov.va.api.lighthouse.charon.service.config.ConnectionDetails;
 import gov.va.api.lighthouse.charon.service.controller.UnrecoverableVistalinkExceptions.UnrecoverableVistalinkException;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
 import java.util.HashMap;

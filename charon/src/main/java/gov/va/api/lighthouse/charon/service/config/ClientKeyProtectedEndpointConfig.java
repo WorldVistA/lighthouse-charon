@@ -51,7 +51,11 @@ public class ClientKeyProtectedEndpointConfig {
 
     registration.setOrder(1);
 
-    registration.addUrlPatterns("/rpc/*", PathRewriteConfig.leadingPath() + "rpc/*");
+    registration.addUrlPatterns(
+        "/rpc/*",
+        PathRewriteConfig.leadingPath() + "rpc/*",
+        "/v1/rpc/*",
+        PathRewriteConfig.leadingPath() + "v1/rpc/*");
 
     return registration;
   }

@@ -1,5 +1,6 @@
 package gov.va.api.lighthouse.charon.service.controller;
 
+import gov.va.api.lighthouse.charon.service.core.VistalinkXmlResponse;
 import gov.va.med.vistalink.rpc.RpcResponse;
 import java.io.StringReader;
 import javax.xml.bind.JAXBContext;

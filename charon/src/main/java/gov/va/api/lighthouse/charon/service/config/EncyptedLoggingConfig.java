@@ -3,6 +3,7 @@ package gov.va.api.lighthouse.charon.service.config;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import gov.va.api.health.autoconfig.encryption.BasicEncryption;
+import gov.va.api.lighthouse.charon.service.core.EncryptedLogging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +24,6 @@ public class EncyptedLoggingConfig {
       log.info("encrypted logging enabled");
       return EnabledEncryptedLogging.of(encryptionKey);
     }
-  }
-
-  public interface EncryptedLogging {
-    String encrypt(String message);
   }
 
   public static class DisabledEncryptedLogging implements EncryptedLogging {

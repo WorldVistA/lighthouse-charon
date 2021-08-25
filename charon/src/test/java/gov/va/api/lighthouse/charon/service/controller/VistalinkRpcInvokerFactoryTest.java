@@ -13,7 +13,11 @@ import gov.va.api.lighthouse.charon.api.RpcMetadata;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
 import gov.va.api.lighthouse.charon.service.controller.FugaziMacros.AppendXMacro;
 import gov.va.api.lighthouse.charon.service.controller.FugaziMacros.ToUpperCaseMacro;
-import gov.va.api.lighthouse.charon.service.controller.UnrecoverableVistalinkExceptions.BadRpcContext;
+import gov.va.api.lighthouse.charon.service.core.ApplicationProxyUserVistalinkSession;
+import gov.va.api.lighthouse.charon.service.core.StandardUserVistalinkSession;
+import gov.va.api.lighthouse.charon.service.core.UnrecoverableVistalinkExceptions.BadRpcContext;
+import gov.va.api.lighthouse.charon.service.core.VistalinkSession;
+import gov.va.api.lighthouse.charon.service.core.VistalinkXmlResponse;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnection;
 import gov.va.med.vistalink.adapter.record.VistaLinkFaultException;
 import gov.va.med.vistalink.rpc.NoRpcContextFaultException;
@@ -80,7 +84,7 @@ public class VistalinkRpcInvokerFactoryTest {
     xmlPayload.setValue(payloadValue);
     xmlResponse.setResponse(xmlPayload);
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    VistalinkRpcInvoker.createJaxbContext().createMarshaller().marshal(xmlResponse, outputStream);
+    VistalinkXmlResponse.createJaxbContext().createMarshaller().marshal(xmlResponse, outputStream);
     RpcResponse response =
         new FugaziRpcResponse(
             outputStream.toString(StandardCharsets.UTF_8), null, null, null, null, null);

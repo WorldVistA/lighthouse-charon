@@ -4,7 +4,7 @@ import gov.va.api.health.autoconfig.logging.Redact;
 import gov.va.api.lighthouse.charon.api.RpcRequest;
 import gov.va.api.lighthouse.charon.api.RpcResponse;
 import gov.va.api.lighthouse.charon.api.VistalinkProperties;
-import gov.va.api.lighthouse.charon.service.config.EncyptedLoggingConfig.EncryptedLogging;
+import gov.va.api.lighthouse.charon.service.core.EncryptedLogging;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Value;
 
 /** Data needed for connecting to a vista instance. */
+@SuppressWarnings("ClassCanBeRecord")
 @Value
 @Builder
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)

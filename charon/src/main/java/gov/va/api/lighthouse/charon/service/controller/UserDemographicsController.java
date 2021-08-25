@@ -7,6 +7,7 @@ import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
 import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import gov.va.api.lighthouse.charon.service.controller.VistaLinkExceptions.NameResolutionException;
+import gov.va.api.lighthouse.charon.service.core.StandardUserVistalinkSession;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import java.util.Map;

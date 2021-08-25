@@ -1,6 +1,6 @@
-package gov.va.api.lighthouse.charon.service.controller;
+package gov.va.api.lighthouse.charon.service.core;
 
-import static gov.va.api.lighthouse.charon.service.controller.VistalinkSession.connectionIdentifier;
+import static gov.va.api.lighthouse.charon.service.core.VistalinkSession.connectionIdentifier;
 
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.med.vistalink.adapter.cci.VistaLinkAppProxyConnectionSpec;

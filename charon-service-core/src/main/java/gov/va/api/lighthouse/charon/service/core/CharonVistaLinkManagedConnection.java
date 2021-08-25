@@ -1,4 +1,4 @@
-package gov.va.api.lighthouse.charon.service.controller;
+package gov.va.api.lighthouse.charon.service.core;
 
 import gov.va.med.vistalink.adapter.cci.VistaLinkResourceException;
 import gov.va.med.vistalink.adapter.spi.VistaLinkManagedConnection;

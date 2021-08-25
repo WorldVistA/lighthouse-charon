@@ -13,7 +13,7 @@ import gov.va.api.lighthouse.charon.api.RpcRequest;
 import gov.va.api.lighthouse.charon.api.RpcResponse;
 import gov.va.api.lighthouse.charon.api.RpcResponse.Status;
 import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
-import gov.va.api.lighthouse.charon.service.controller.UnrecoverableVistalinkExceptions.LoginFailure;
+import gov.va.api.lighthouse.charon.service.core.UnrecoverableVistalinkExceptions.LoginFailure;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,12 +1,12 @@
-package gov.va.api.lighthouse.charon.service.controller;
+package gov.va.api.lighthouse.charon.service.core;
 
-import static gov.va.api.lighthouse.charon.service.controller.CharonVistaLinkManagedConnection.socketTimeout;
-import static gov.va.api.lighthouse.charon.service.controller.VistalinkSession.connectionIdentifier;
+import static gov.va.api.lighthouse.charon.service.core.CharonVistaLinkManagedConnection.socketTimeout;
+import static gov.va.api.lighthouse.charon.service.core.VistalinkSession.connectionIdentifier;
 import static java.util.stream.Collectors.toMap;
 
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
-import gov.va.api.lighthouse.charon.service.controller.UnrecoverableVistalinkExceptions.LoginFailure;
-import gov.va.api.lighthouse.charon.service.controller.UnrecoverableVistalinkExceptions.UnrecoverableVistalinkException;
+import gov.va.api.lighthouse.charon.service.core.UnrecoverableVistalinkExceptions.LoginFailure;
+import gov.va.api.lighthouse.charon.service.core.UnrecoverableVistalinkExceptions.UnrecoverableVistalinkException;
 import gov.va.med.exception.FoundationsException;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnection;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnectionSpecImpl;

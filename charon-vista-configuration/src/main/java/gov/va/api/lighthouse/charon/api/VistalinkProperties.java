@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Value;
 
 /** Contains connection information about all known vista sites. */
+@SuppressWarnings("ClassCanBeRecord")
 @Builder
 @Value
 @Schema

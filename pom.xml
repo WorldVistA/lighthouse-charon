@@ -12,7 +12,11 @@
   <version>4.0.28-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
+    <module>charon-vista-configuration</module>
     <module>charon-api</module>
+    <module>charon-api-v1</module>
+    <module>charon-service-core</module>
+    <module>charon-service-v1</module>
     <module>charon-models</module>
     <module>charon</module>
     <module>charon-tests</module>

@@ -9,6 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
+import gov.va.api.lighthouse.charon.service.core.ApplicationProxyUserVistalinkSession;
+import gov.va.api.lighthouse.charon.service.core.VistalinkSession;
 import gov.va.med.vistalink.rpc.RpcRequest;
 import gov.va.med.vistalink.rpc.RpcResponse;
 import java.util.List;

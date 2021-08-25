@@ -1,24 +1,26 @@
 package gov.va.api.lighthouse.charon.service.controller;
 
-import static gov.va.api.lighthouse.charon.service.controller.CharonVistaLinkManagedConnection.socketTimeout;
+import static gov.va.api.lighthouse.charon.service.core.CharonVistaLinkManagedConnection.socketTimeout;
 
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.api.RpcMetadata;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
+import gov.va.api.lighthouse.charon.service.core.ApplicationProxyUserVistalinkSession;
+import gov.va.api.lighthouse.charon.service.core.StandardUserVistalinkSession;
+import gov.va.api.lighthouse.charon.service.core.UnrecoverableVistalinkExceptions;
+import gov.va.api.lighthouse.charon.service.core.VistalinkSession;
+import gov.va.api.lighthouse.charon.service.core.VistalinkXmlResponse;
 import gov.va.med.vistalink.rpc.NoRpcContextFaultException;
 import gov.va.med.vistalink.rpc.RpcNotInContextFaultException;
 import gov.va.med.vistalink.rpc.RpcNotOkForProxyUseException;
 import gov.va.med.vistalink.rpc.RpcRequest;
 import gov.va.med.vistalink.rpc.RpcRequestFactory;
 import gov.va.med.vistalink.rpc.RpcResponse;
-import java.io.StringReader;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.function.BiFunction;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -29,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ToString(onlyExplicitlyIncluded = true)
 public class VistalinkRpcInvoker implements RpcInvoker, MacroExecutionContext {
-  private static final JAXBContext JAXB_CONTEXT = createJaxbContext();
 
   @Getter private final ConnectionDetails connectionDetails;
 
@@ -78,19 +79,6 @@ public class VistalinkRpcInvoker implements RpcInvoker, MacroExecutionContext {
     }
   }
 
-  @SneakyThrows
-  static JAXBContext createJaxbContext() {
-    return JAXBContext.newInstance(VistalinkXmlResponse.class);
-  }
-
-  /** Create a response object by parsing the raw data. */
-  @SneakyThrows
-  public static VistalinkXmlResponse parse(RpcResponse rpcResponse) {
-    Unmarshaller unmarshaller = JAXB_CONTEXT.createUnmarshaller();
-    return (VistalinkXmlResponse)
-        unmarshaller.unmarshal(new StringReader(rpcResponse.getRawResponse()));
-  }
-
   @Override
   public void close() {
     session.close();
@@ -129,7 +117,7 @@ public class VistalinkRpcInvoker implements RpcInvoker, MacroExecutionContext {
       vistalinkRequest.setTimeOut(socketTimeout() + 4);
       RpcResponse vistalinkResponse = invoke(vistalinkRequest);
       log.info("{} Response {} chars", this, vistalinkResponse.getRawResponse().length());
-      VistalinkXmlResponse xmlResponse = parse(vistalinkResponse);
+      VistalinkXmlResponse xmlResponse = VistalinkXmlResponse.parse(vistalinkResponse);
       return RpcInvocationResult.builder()
           .vista(vista())
           .metadata(RpcMetadata.builder().timezone(connectionDetails.timezone()).build())

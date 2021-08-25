@@ -1,16 +1,16 @@
-package gov.va.api.lighthouse.charon.service.controller;
+package gov.va.api.lighthouse.charon.service.core;
 
 import java.io.Serial;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-final class UnrecoverableVistalinkExceptions {
+public final class UnrecoverableVistalinkExceptions {
 
-  static class BadRpcContext extends UnrecoverableVistalinkException {
+  public static class BadRpcContext extends UnrecoverableVistalinkException {
 
     @Serial private static final long serialVersionUID = 6167518157729577717L;
 
-    BadRpcContext(String rpcContext, Throwable cause) {
+    public BadRpcContext(String rpcContext, Throwable cause) {
       super(rpcContext, cause);
     }
   }
@@ -24,11 +24,11 @@ final class UnrecoverableVistalinkExceptions {
     }
   }
 
-  static class UnrecoverableVistalinkException extends RuntimeException {
+  public static class UnrecoverableVistalinkException extends RuntimeException {
 
     @Serial private static final long serialVersionUID = -6893741398933405923L;
 
-    UnrecoverableVistalinkException(String message, Throwable cause) {
+    public UnrecoverableVistalinkException(String message, Throwable cause) {
       super(message, cause);
     }
   }

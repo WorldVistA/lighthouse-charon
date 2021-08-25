@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
+import gov.va.api.lighthouse.charon.service.core.StandardUserVistalinkSession;
 import gov.va.med.vistalink.rpc.RpcRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

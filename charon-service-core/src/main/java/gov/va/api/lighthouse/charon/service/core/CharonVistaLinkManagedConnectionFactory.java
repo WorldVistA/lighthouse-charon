@@ -1,6 +1,6 @@
-package gov.va.api.lighthouse.charon.service.controller;
+package gov.va.api.lighthouse.charon.service.core;
 
-import static gov.va.api.lighthouse.charon.service.controller.CharonVistaLinkManagedConnection.socketTimeout;
+import static gov.va.api.lighthouse.charon.service.core.CharonVistaLinkManagedConnection.socketTimeout;
 
 import gov.va.med.vistalink.adapter.spi.VistaLinkManagedConnectionFactory;
 import java.io.Serial;

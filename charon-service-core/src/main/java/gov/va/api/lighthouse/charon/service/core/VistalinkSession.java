@@ -1,4 +1,4 @@
-package gov.va.api.lighthouse.charon.service.controller;
+package gov.va.api.lighthouse.charon.service.core;
 
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnection;

@@ -9,7 +9,7 @@
   </parent>
   <groupId>gov.va.api.lighthouse</groupId>
   <artifactId>charon-service-core</artifactId>
-  <version>4.0.28</version>
+  <version>4.0.29-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
     <vistalink-xob-bom.version>1.6.0.028</vistalink-xob-bom.version>

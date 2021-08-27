@@ -1,6 +1,8 @@
 package gov.va.api.lighthouse.charon.service.controller;
 
 import gov.va.api.lighthouse.charon.models.FilemanDate;
+import gov.va.api.lighthouse.charon.service.core.macro.Macro;
+import gov.va.api.lighthouse.charon.service.core.macro.MacroExecutionContext;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeParseException;

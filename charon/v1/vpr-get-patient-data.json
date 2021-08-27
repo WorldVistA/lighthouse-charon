@@ -1,0 +1,21 @@
+{
+  "principal": {
+    "applicationProxyUser":"$VISTA_APPLICATION_PROXY_USER",
+    "accessCode":"$VISTA_ACCESS_CODE",
+    "verifyCode":"$VISTA_VERIFY_CODE"
+  },
+  "vista": "673",
+  "rpc": {
+    "name":"VPR GET PATIENT DATA",
+    "context":"LHS RPC CONTEXT",
+    "parameters": [
+      {"string":";195607"},
+      {"string":"demographics;vitals"},
+      {"string":""},
+      {"string":""},
+      {"string":""},
+      {"string":""},
+      {"array": []}
+    ]
+  }
+}

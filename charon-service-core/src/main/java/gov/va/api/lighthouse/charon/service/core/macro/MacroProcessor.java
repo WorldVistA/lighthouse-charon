@@ -1,4 +1,4 @@
-package gov.va.api.lighthouse.charon.service.controller;
+package gov.va.api.lighthouse.charon.service.core.macro;
 
 import static java.util.stream.Collectors.toList;
 

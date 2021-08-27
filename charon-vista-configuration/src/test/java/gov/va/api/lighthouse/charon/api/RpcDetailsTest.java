@@ -3,6 +3,7 @@ package gov.va.api.lighthouse.charon.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.lighthouse.charon.api.RpcDetails.Parameter;
 import java.util.List;
@@ -47,6 +48,8 @@ public class RpcDetailsTest {
   void emptyStringsAreParsedFromJsonAsEmptyStrings(String json, RpcDetails expected) {
     RpcDetails details = JacksonConfig.createMapper().readValue(json, RpcDetails.class);
     assertThat(details).isEqualTo(expected);
+    var pretty = JacksonConfig.createMapper().setSerializationInclusion(Include.NON_NULL);
+    assertThat(pretty.writeValueAsString(details)).isEqualTo(json);
   }
 
   @Test

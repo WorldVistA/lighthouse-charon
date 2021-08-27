@@ -36,7 +36,7 @@ class ParallelRpcExecutorTest {
 
   ParallelRpcExecutor executor;
 
-  private ConnectionDetails _connectionDetail(int n) {
+  static ConnectionDetails _connectionDetail(int n) {
     return ConnectionDetails.builder()
         .name("v" + n)
         .host("v" + n + ".com")

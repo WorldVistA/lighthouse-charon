@@ -1,13 +1,9 @@
 package gov.va.api.lighthouse.charon.api;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +13,7 @@ import lombok.NonNull;
 @Data
 @Builder
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
-public class RpcPrincipal {
+public class RpcPrincipal implements IsPrincipal {
   /** Required for standard user, application proxy user. */
   @NotBlank @NonNull private String accessCode;
   /** Required for standard user, application proxy user. */
@@ -51,36 +47,5 @@ public class RpcPrincipal {
     this.verifyCode = verifyCode;
     this.applicationProxyUser = applicationProxyUser;
     this.contextOverride = contextOverride;
-  }
-
-  @SuppressWarnings("unused")
-  @JsonIgnore
-  @AssertTrue(message = "Invalid property combination.")
-  private boolean isValid() {
-    return type() != LoginType.INVALID;
-  }
-
-  /**
-   * Determine the type of principal information. INVALID will be returned if enough information is
-   * not available to satisfy any login type.
-   */
-  @JsonIgnore
-  public LoginType type() {
-    if (isNotBlank(accessCode())
-        && isNotBlank(verifyCode())
-        && isNotBlank(applicationProxyUser())) {
-      return LoginType.APPLICATION_PROXY_USER;
-    }
-    if (isNotBlank(accessCode()) && isNotBlank(verifyCode())) {
-      return LoginType.STANDARD_USER;
-    }
-    return LoginType.INVALID;
-  }
-
-  /** All known LoginTypes. */
-  public enum LoginType {
-    STANDARD_USER,
-    APPLICATION_PROXY_USER,
-    INVALID
   }
 }

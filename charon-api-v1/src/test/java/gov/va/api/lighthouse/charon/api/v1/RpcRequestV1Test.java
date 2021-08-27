@@ -3,6 +3,7 @@ package gov.va.api.lighthouse.charon.api.v1;
 import static gov.va.api.lighthouse.charon.api.v1.RoundTrip.assertRoundTrip;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import gov.va.api.lighthouse.charon.api.RpcDetails;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -16,19 +17,19 @@ public class RpcRequestV1Test {
         .vista("123")
         .principal(RpcPrincipalV1.builder().accessCode("ac").verifyCode("vc").build())
         .rpc(
-            RpcDetailsV1.builder()
+            RpcDetails.builder()
                 .name("FAUX NAME")
                 .context("FAUX CONTEXT")
                 .parameters(
                     List.of(
-                        RpcDetailsV1.Parameter.builder().string("").build(),
-                        RpcDetailsV1.Parameter.builder().string("a").build(),
-                        RpcDetailsV1.Parameter.builder().ref("").build(),
-                        RpcDetailsV1.Parameter.builder().ref("b").build(),
-                        RpcDetailsV1.Parameter.builder().array(List.of()).build(),
-                        RpcDetailsV1.Parameter.builder().array(List.of("c")).build(),
-                        RpcDetailsV1.Parameter.builder().namedArray(Map.of()).build(),
-                        RpcDetailsV1.Parameter.builder().namedArray(Map.of("d", "e")).build()))
+                        RpcDetails.Parameter.builder().string("").build(),
+                        RpcDetails.Parameter.builder().string("a").build(),
+                        RpcDetails.Parameter.builder().ref("").build(),
+                        RpcDetails.Parameter.builder().ref("b").build(),
+                        RpcDetails.Parameter.builder().array(List.of()).build(),
+                        RpcDetails.Parameter.builder().array(List.of("c")).build(),
+                        RpcDetails.Parameter.builder().namedArray(Map.of()).build(),
+                        RpcDetails.Parameter.builder().namedArray(Map.of("d", "e")).build()))
                 .build())
         .build();
   }
@@ -38,19 +39,19 @@ public class RpcRequestV1Test {
         .vista("123")
         .principal(RpcPrincipalV1.builder().accessCode("ac").verifyCode("vc").build())
         .rpc(
-            RpcDetailsV1.builder()
+            RpcDetails.builder()
                 .name("FAUX NAME")
                 .context("FAUX CONTEXT")
                 .parameters(
                     List.of(
-                        RpcDetailsV1.Parameter.builder().string("").build(),
-                        RpcDetailsV1.Parameter.builder().string("a").build(),
-                        RpcDetailsV1.Parameter.builder().ref("").build(),
-                        RpcDetailsV1.Parameter.builder().ref("b").build(),
-                        RpcDetailsV1.Parameter.builder().array(List.of()).build(),
-                        RpcDetailsV1.Parameter.builder().array(List.of("c")).build(),
-                        RpcDetailsV1.Parameter.builder().namedArray(Map.of()).build(),
-                        RpcDetailsV1.Parameter.builder().namedArray(Map.of("d", "e")).build()))
+                        RpcDetails.Parameter.builder().string("").build(),
+                        RpcDetails.Parameter.builder().string("a").build(),
+                        RpcDetails.Parameter.builder().ref("").build(),
+                        RpcDetails.Parameter.builder().ref("b").build(),
+                        RpcDetails.Parameter.builder().array(List.of()).build(),
+                        RpcDetails.Parameter.builder().array(List.of("c")).build(),
+                        RpcDetails.Parameter.builder().namedArray(Map.of()).build(),
+                        RpcDetails.Parameter.builder().namedArray(Map.of("d", "e")).build()))
                 .build())
         .build();
   }

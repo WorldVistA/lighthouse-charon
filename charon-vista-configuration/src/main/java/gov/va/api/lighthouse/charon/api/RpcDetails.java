@@ -2,6 +2,8 @@ package gov.va.api.lighthouse.charon.api;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,6 +35,8 @@ import org.apache.commons.lang3.StringUtils;
 public class RpcDetails {
   @NotBlank private String name;
   @NotBlank private String context;
+
+  @JsonInclude(Include.NON_ABSENT)
   private Optional<Double> version;
 
   @Builder.Default private List<Parameter> parameters = new ArrayList<>();
@@ -59,9 +63,11 @@ public class RpcDetails {
     private String string;
 
     @JsonDeserialize(contentUsing = ParameterValueDeserializer.class)
+    @JsonSerialize(contentUsing = ParameterValueSerializer.class)
     private List<String> array;
 
     @JsonDeserialize(contentUsing = ParameterValueDeserializer.class)
+    @JsonSerialize(contentUsing = ParameterValueSerializer.class)
     private Map<String, String> namedArray;
 
     /**

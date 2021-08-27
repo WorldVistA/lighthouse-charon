@@ -37,7 +37,7 @@ public class GetInsEntryParserTest {
 
   @ParameterizedTest
   @MethodSource
-  void parseLineFailureThrows(Class exception, String sample) {
+  void parseLineFailureThrows(Class<? extends Throwable> exception, String sample) {
     assertThatExceptionOfType(exception)
         .isThrownBy(() -> GetInsEntryParser.create().parseLine(sample));
   }

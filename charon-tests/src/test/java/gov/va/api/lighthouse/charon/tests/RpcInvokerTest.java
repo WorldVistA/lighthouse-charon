@@ -7,10 +7,9 @@ import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
-import gov.va.api.lighthouse.charon.service.controller.DfnMacro;
 import gov.va.api.lighthouse.charon.service.controller.LocalDateMacro;
-import gov.va.api.lighthouse.charon.service.controller.MacroProcessorFactory;
 import gov.va.api.lighthouse.charon.service.controller.VistalinkRpcInvokerFactory;
+import gov.va.api.lighthouse.charon.service.core.macro.MacroProcessorFactory;
 import java.util.List;
 import java.util.Locale;
 import lombok.Builder;
@@ -31,8 +30,7 @@ public class RpcInvokerTest {
     assumeEnabled("test.rpcinvoker");
     config = CharonTestConfig.fromSystemProperties();
     vistalinkRpcInvokerFactory =
-        new VistalinkRpcInvokerFactory(
-            new MacroProcessorFactory(List.of(new DfnMacro(), new LocalDateMacro())));
+        new VistalinkRpcInvokerFactory(new MacroProcessorFactory(List.of(new LocalDateMacro())));
     var rpcPrincipal =
         RpcPrincipal.builder().accessCode(config.accessCode).verifyCode(config.verifyCode).build();
     var connectionDetails =

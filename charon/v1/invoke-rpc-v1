@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+
+
+#
+# vfq.local.vista.access-code
+# vfq.local.vista.verify-code
+# vfq.vista.application-proxy-user
+#
+
+usage() {
+cat<<EOF
+
+Perform envsubstitution on the given template then post it a locally running
+server that assumes a VistA VM is also running.
+
+${1:-}
+EOF
+exit 1
+}
+
+
+TEMPLATE=${1:-}
+PORT=8050
+if [ -z "${TEMPLATE:-}" ]; then usage "template not specified"; fi
+if [ ! -f "$TEMPLATE" ]; then usage "template not found: $TEMPLATE"; fi
+shift
+
+
+
+if [ -z "${VISTA_ACCESS_CODE:-}${VISTA_VERIFY_CODE:-}${VISTA_APPLICATION_PROXY_USER:-}" -a -n "${SPW:-}" ]
+then
+  ENVIRONMENT=${ENVIRONMENT:-local}
+  export VISTA_ACCESS_CODE="$(s vfq.$ENVIRONMENT.vista.access-code)"
+  export VISTA_VERIFY_CODE="$(s vfq.$ENVIRONMENT.vista.verify-code)"
+  export VISTA_APPLICATION_PROXY_USER="$(s vfq.vista.application-proxy-user)"
+fi
+
+
+POST_ME=$(mktemp)
+trap "rm $POST_ME" EXIT
+cat $TEMPLATE | envsubst > $POST_ME
+if [ "${LOG_REQUEST:-false}" != false ]
+then
+  echo "REQUEST:"
+  if [ "${LOG_REQUEST}" == "clear" ]
+  then
+    jq . $POST_ME
+  else
+    jq . $POST_ME | sed -e 's/"\(access\|verify\)Code":.*/"\1Code": "REDACTED"/'
+  fi
+fi
+
+curl \
+  -s \
+  -XPOST \
+  -H"Content-Type:application/json" \
+  --data @$POST_ME \
+  ${URL:-http://localhost:$PORT/v1/rpc} \
+  $@

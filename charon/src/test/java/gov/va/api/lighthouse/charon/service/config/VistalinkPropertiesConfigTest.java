@@ -1,30 +1,12 @@
 package gov.va.api.lighthouse.charon.service.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 public class VistalinkPropertiesConfigTest {
-
-  @ParameterizedTest
-  @ValueSource(
-      strings = {
-        "host:1234",
-        "host:nope:div",
-        "host:1234:div:timezone:rando",
-        "host:1234:div:Space/Moon"
-      })
-  @NullAndEmptySource
-  void asConnectionDetailsThrowsExceptionWhenValueCannotBeParsed(String value) {
-    assertThatExceptionOfType(IllegalArgumentException.class)
-        .isThrownBy(() -> new VistalinkPropertiesConfig().asConnectionDetails("n", value));
-  }
 
   @Test
   void loadParsesVistalinkPropertiesFromFile() {

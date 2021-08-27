@@ -12,6 +12,8 @@
   <version>4.0.29-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
+    <!-- Vistalink interaction cannot be unit tested -->
+    <jacoco.coverage>0.15</jacoco.coverage>
     <vistalink-xob-bom.version>1.6.0.028</vistalink-xob-bom.version>
     <javax.resource-api.version>1.7.1</javax.resource-api.version>
     <jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
@@ -81,6 +83,11 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-1.2-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

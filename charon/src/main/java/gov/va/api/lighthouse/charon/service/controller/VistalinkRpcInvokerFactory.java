@@ -2,6 +2,7 @@ package gov.va.api.lighthouse.charon.service.controller;
 
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
+import gov.va.api.lighthouse.charon.service.core.macro.MacroProcessorFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

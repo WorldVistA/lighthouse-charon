@@ -11,13 +11,12 @@ import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails.Parameter;
 import gov.va.api.lighthouse.charon.api.RpcMetadata;
 import gov.va.api.lighthouse.charon.api.RpcPrincipal;
-import gov.va.api.lighthouse.charon.service.controller.FugaziMacros.AppendXMacro;
-import gov.va.api.lighthouse.charon.service.controller.FugaziMacros.ToUpperCaseMacro;
-import gov.va.api.lighthouse.charon.service.core.ApplicationProxyUserVistalinkSession;
-import gov.va.api.lighthouse.charon.service.core.StandardUserVistalinkSession;
 import gov.va.api.lighthouse.charon.service.core.UnrecoverableVistalinkExceptions.BadRpcContext;
 import gov.va.api.lighthouse.charon.service.core.VistalinkSession;
 import gov.va.api.lighthouse.charon.service.core.VistalinkXmlResponse;
+import gov.va.api.lighthouse.charon.service.core.macro.Macro;
+import gov.va.api.lighthouse.charon.service.core.macro.MacroExecutionContext;
+import gov.va.api.lighthouse.charon.service.core.macro.MacroProcessorFactory;
 import gov.va.med.vistalink.adapter.cci.VistaLinkConnection;
 import gov.va.med.vistalink.adapter.record.VistaLinkFaultException;
 import gov.va.med.vistalink.rpc.NoRpcContextFaultException;
@@ -28,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import javax.xml.bind.JAXBException;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,9 +53,7 @@ public class VistalinkRpcInvokerFactoryTest {
   }
 
   VistalinkRpcInvoker createInvoker() {
-    var macroProcessor =
-        new MacroProcessorFactory(
-            List.of(new FugaziMacros.AppendXMacro(), new FugaziMacros.ToUpperCaseMacro()));
+    var macroProcessor = new MacroProcessorFactory(List.of(new ToUpperCaseMacro()));
 
     return VistalinkRpcInvoker.builder()
         .macroProcessorFactory(macroProcessor)
@@ -68,8 +66,7 @@ public class VistalinkRpcInvokerFactoryTest {
   @Test
   void createReturnsAnRpcInvokerFactory() {
     VistalinkRpcInvokerFactory f =
-        new VistalinkRpcInvokerFactory(
-            new MacroProcessorFactory(List.of(new AppendXMacro(), new ToUpperCaseMacro())));
+        new VistalinkRpcInvokerFactory(new MacroProcessorFactory(List.of()));
     RpcInvoker in =
         f.create(
             RpcPrincipal.standardUserBuilder().accessCode("a").verifyCode("v").build(),
@@ -195,24 +192,6 @@ public class VistalinkRpcInvokerFactoryTest {
     assertThat(request.getParams().getParam(1)).isEqualTo("hello");
   }
 
-  @Test
-  void sessionSelection() {
-    assertThat(
-            VistalinkRpcInvoker.chooseSession(
-                RpcPrincipal.standardUserBuilder().accessCode("a").verifyCode("v").build(),
-                connectionDetails()))
-        .isInstanceOf(StandardUserVistalinkSession.class);
-    assertThat(
-            VistalinkRpcInvoker.chooseSession(
-                RpcPrincipal.applicationProxyUserBuilder()
-                    .accessCode("a")
-                    .verifyCode("v")
-                    .applicationProxyUser("u")
-                    .build(),
-                connectionDetails()))
-        .isInstanceOf(ApplicationProxyUserVistalinkSession.class);
-  }
-
   private static class FugaziRpcResponse extends RpcResponse {
 
     FugaziRpcResponse(
@@ -223,6 +202,19 @@ public class VistalinkRpcInvokerFactoryTest {
         String cdataFromXml,
         String resultsType) {
       super(rawXml, filteredXml, doc, messageType, cdataFromXml, resultsType);
+    }
+  }
+
+  @EqualsAndHashCode
+  public static class ToUpperCaseMacro implements Macro {
+    @Override
+    public String evaluate(MacroExecutionContext ctx, String value) {
+      return value.toUpperCase();
+    }
+
+    @Override
+    public String name() {
+      return "touppercase";
     }
   }
 }

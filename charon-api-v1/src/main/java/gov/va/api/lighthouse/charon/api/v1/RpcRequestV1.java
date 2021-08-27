@@ -2,6 +2,7 @@ package gov.va.api.lighthouse.charon.api.v1;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import gov.va.api.lighthouse.charon.api.RpcDetails;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,7 @@ import lombok.Data;
 @Builder
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class RpcRequestV1 {
-  @NotNull @Valid private RpcDetailsV1 rpc;
+  @NotNull @Valid private RpcDetails rpc;
   @NotNull @Valid private RpcPrincipalV1 principal;
 
   @Schema(

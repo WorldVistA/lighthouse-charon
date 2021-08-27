@@ -16,5 +16,10 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
+    <dependency>
+      <groupId>gov.va.api.lighthouse</groupId>
+      <artifactId>charon-vista-configuration</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

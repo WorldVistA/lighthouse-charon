@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
+import gov.va.api.lighthouse.charon.service.core.macro.MacroExecutionContext;
+import gov.va.api.lighthouse.charon.service.core.macro.MacroProcessor;
+import gov.va.api.lighthouse.charon.service.core.macro.MacroProcessorFactory;
 import gov.va.med.exception.FoundationsException;
 import gov.va.med.vistalink.rpc.RpcRequest;
 import gov.va.med.vistalink.rpc.RpcRequestFactory;
-import gov.va.med.vistalink.rpc.RpcResponse;
 import java.util.List;
 
 class InteractiveTestSupport {
@@ -29,11 +31,6 @@ class InteractiveTestSupport {
     return new MacroExecutionContext() {
       @Override
       public ConnectionDetails connectionDetails() {
-        return null;
-      }
-
-      @Override
-      public RpcResponse invoke(RpcRequest request) {
         return null;
       }
     };

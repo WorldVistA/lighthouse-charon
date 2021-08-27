@@ -1,4 +1,4 @@
-package gov.va.api.lighthouse.charon.service.controller;
+package gov.va.api.lighthouse.charon.service.core.macro;
 
 import static gov.va.api.lighthouse.charon.api.RpcDetails.Parameter;
 import static org.assertj.core.api.Assertions.assertThat;

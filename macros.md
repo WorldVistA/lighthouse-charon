@@ -10,17 +10,17 @@ Good!
 
 ```
 "parameters": {
-  { "string": "${dfn(1111122222V3334444)}"
+  { "string": "${local-fileman-date(2005-01-21T07:57:00Z)}"
 }
 
 "parameters": {
-  { "array": [ "true", ${dfn(1111122222V3334444)}", "", "patient" ]
+  { "array": [ "true", ${local-fileman-date(2005-01-21T07:57:00Z)}", "", "patient" ]
 }
 
 "parameters": {
   {
     "namedArray": {
-      "patient":"${dfn(1111122222V3334444)}",
+      "patient":"${local-fileman-date(2005-01-21T07:57:00Z)}",
       "domain":"vitals"
     }
   }
@@ -31,13 +31,13 @@ Not Good
 
 ```
 "parameters": {
-  { "string": "I am ${dfn(1111122222V3334444)}"
+  { "string": "Today is ${local-fileman-date(2005-01-21T07:57:00Z)}"
 }
 
 "parameters": {
   {
     "namedArray": {
-      "${dfn(1111122222V3334444)}":"patient",
+      "${local-fileman-date(2005-01-21T07:57:00Z)}":"patient",
       "domain":"vitals"
     }
   }
@@ -46,10 +46,6 @@ Not Good
 
 ## Supported Macros
 
-### `${dfn(ICN)}`
-
-Replace a ICN value with VistA site specific DFN value for a patient ICN.
-
 ### `${local-fileman-date(ISO-8601)}`
 
 Replace a ISO-8601 date value with a localized fileman date for a targeted Vista site
@@ -57,13 +53,11 @@ Replace a ISO-8601 date value with a localized fileman date for a targeted Vista
 ## What's under the hood?
 
 - `MacroProcessorFactory` is autowired with `Macro`instances
-- `VistalinkRpcInvokerFactory` is autowired with a `MacroProcessorFactory`. It will pass this factory along as it
-  creates `VistalinkRpcInvokers`
-- `VistalinkRpcInvoker` will use the factory to create a `MacroProcessor` based on a `MacroExecutionContext` that is
-  specific to itself.
+- `VistalinkRpcInvokerFactory` is autowired with a `MacroProcessorFactory`. It will pass this factory along as it creates `VistalinkRpcInvokers`
+- `VistalinkRpcInvoker` will use the factory to create a `MacroProcessor` based on a `MacroExecutionContext` that is specific to itself.
 - `VistalinkRpcInvoker` will invoke the `MacroProcessor` to evaluate each value.
-    - If the value is a macro it is processed and a new value is returned.
-    - If the value is not a macro, it is returned unchanged.
+  - If the value is a macro it is processed and a new value is returned.
+  - If the value is not a macro, it is returned unchanged.
 
 #### The `MacroProcessor`
 
@@ -77,6 +71,6 @@ Replace a ISO-8601 date value with a localized fileman date for a targeted Vista
 
 ### The `Macro`
 
-- `Macro` implementations provide a `name` that is used in for the macro in RPC requests, e.g. `dfn`
+- `Macro` implementations provide a `name` that is used in for the macro in RPC requests, e.g. `local-fileman-date`
 - Implementations may interact with RPCs through a provided execution context which allows low-level invocation.
-    - Connection, authentication, and error handling are performed by the `MacroExecutionContext` itself.
+  - Connection, authentication, and error handling are performed by the `MacroExecutionContext` itself.

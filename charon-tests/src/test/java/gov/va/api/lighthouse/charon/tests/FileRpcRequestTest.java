@@ -8,11 +8,10 @@ import gov.va.api.lighthouse.charon.api.RpcRequest;
 import gov.va.api.lighthouse.charon.api.RpcResponse;
 import gov.va.api.lighthouse.charon.api.VistalinkProperties;
 import gov.va.api.lighthouse.charon.service.controller.AllVistaNameResolver;
-import gov.va.api.lighthouse.charon.service.controller.DfnMacro;
 import gov.va.api.lighthouse.charon.service.controller.LocalDateMacro;
-import gov.va.api.lighthouse.charon.service.controller.MacroProcessorFactory;
 import gov.va.api.lighthouse.charon.service.controller.ParallelRpcExecutor;
 import gov.va.api.lighthouse.charon.service.controller.VistalinkRpcInvokerFactory;
+import gov.va.api.lighthouse.charon.service.core.macro.MacroProcessorFactory;
 import java.io.File;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -29,8 +28,7 @@ public class FileRpcRequestTest {
   void invokeRequest() {
     assumeEnabled("test.file-rpc-request");
     var invokerFactory =
-        new VistalinkRpcInvokerFactory(
-            new MacroProcessorFactory(List.of(new DfnMacro(), new LocalDateMacro())));
+        new VistalinkRpcInvokerFactory(new MacroProcessorFactory(List.of(new LocalDateMacro())));
     var request = loadRequest();
     ParallelRpcExecutor executor =
         new ParallelRpcExecutor(

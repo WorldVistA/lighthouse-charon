@@ -1,12 +1,8 @@
-package gov.va.api.lighthouse.charon.service.controller;
+package gov.va.api.lighthouse.charon.service.core.macro;
 
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
-import gov.va.med.vistalink.rpc.RpcRequest;
-import gov.va.med.vistalink.rpc.RpcResponse;
 
 /** Interface that enables macro processing. */
 public interface MacroExecutionContext {
   ConnectionDetails connectionDetails();
-
-  RpcResponse invoke(RpcRequest request);
 }

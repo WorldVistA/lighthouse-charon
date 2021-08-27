@@ -3,9 +3,9 @@ package gov.va.api.lighthouse.charon.service.controller;
 import static java.util.stream.Collectors.toList;
 
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
+import gov.va.api.lighthouse.charon.api.ConnectionDetailsParser;
 import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
 import gov.va.api.lighthouse.charon.api.VistalinkProperties;
-import gov.va.api.lighthouse.charon.service.config.VistalinkPropertiesConfig;
 import gov.va.api.lighthouse.charon.service.controller.VistaLinkExceptions.UnknownVista;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,7 +62,7 @@ public class NameResolution {
     if (!rpcVistaTargets.include().isEmpty()) {
       List<String> namedVistas = new ArrayList<>(rpcVistaTargets.include().size());
       for (String included : rpcVistaTargets.include()) {
-        var details = VistalinkPropertiesConfig.parse(included);
+        var details = ConnectionDetailsParser.parse(included);
         if (details.isEmpty()) {
           namedVistas.add(included);
         } else {

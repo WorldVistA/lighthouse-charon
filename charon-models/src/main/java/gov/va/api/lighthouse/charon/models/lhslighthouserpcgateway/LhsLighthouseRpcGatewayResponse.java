@@ -2,8 +2,12 @@ package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,11 +187,27 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
   public static class Results {
 
     private List<FilemanEntry> results;
-    private ResultsError error;
+
+    @JsonFormat(with = Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @JsonProperty("error")
+    private List<ResultsError> errors;
+
+    /** Backwards compatibility: Return the first error. */
+    public ResultsError error() {
+      return errors().isEmpty() ? null : errors().get(0);
+    }
+
+    /** Lazy Initialization. */
+    public List<ResultsError> errors() {
+      if (errors == null) {
+        errors = new ArrayList<>();
+      }
+      return errors;
+    }
 
     @JsonIgnore
     public boolean hasError() {
-      return error != null;
+      return !errors().isEmpty();
     }
 
     /** Lazy Initialization. */
@@ -239,7 +259,7 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
     /** Lazy initialization. */
     public Map<String, String> data() {
       if (data == null) {
-        return new HashMap<>();
+        data = new HashMap<>();
       }
       return data;
     }

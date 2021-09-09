@@ -9,6 +9,7 @@ import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouse
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.ResultsError;
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.UnexpectedVistaValue;
 import gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGatewayResponse.Values;
+import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -34,10 +35,12 @@ class LhsLighthouseRpcGatewayResponseTest {
                         "1",
                         Results.builder().build(),
                         "2",
-                        Results.builder().error(ResultsError.builder().build()).build(),
+                        Results.builder().errors(List.of(ResultsError.builder().build())).build(),
                         "3",
                         Results.builder()
-                            .error(ResultsError.builder().data(Map.of("stuff", "three")).build())
+                            .errors(
+                                List.of(
+                                    ResultsError.builder().data(Map.of("stuff", "three")).build()))
                             .build()))
                 .build()
                 .collectErrors())
@@ -103,6 +106,9 @@ class LhsLighthouseRpcGatewayResponseTest {
           "text":"-1^ICN NOT IN DATABASE"
         }
       }
+      """,
+        """
+      {"error":[{"code":1,"location":"SEARCH^LHSIB","text":"-1^ICN NOT IN DATABASE"}]}
       """
       })
   @SneakyThrows

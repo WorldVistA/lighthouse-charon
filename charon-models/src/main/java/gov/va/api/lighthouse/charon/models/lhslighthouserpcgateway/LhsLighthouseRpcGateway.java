@@ -2,10 +2,12 @@ package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
 import static java.util.stream.Collectors.toList;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LhsLighthouseRpcGateway {
@@ -28,5 +30,11 @@ public class LhsLighthouseRpcGateway {
   /** Remove the `#` from the field number prefix if it exists. */
   public static List<String> deoctothorpe(@NonNull List<String> fieldNumbers) {
     return fieldNumbers.stream().map(LhsLighthouseRpcGateway::deoctothorpe).collect(toList());
+  }
+
+  @SneakyThrows
+  public static LhsLighthouseRpcGatewayResponse.Results deserialize(
+      ObjectMapper reader, String value) {
+    return reader.readValue(value, LhsLighthouseRpcGatewayResponse.Results.class);
   }
 }

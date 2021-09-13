@@ -1,6 +1,7 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
 import static gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGateway.deoctothorpe;
+import static gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGateway.deserialize;
 import static java.lang.String.join;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
@@ -19,7 +20,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.SneakyThrows;
 import lombok.Value;
 
 /** Java representation of the LHS LIGHTHOUSE RPC GATEWAY RPC LIST manifest. */
@@ -31,18 +31,14 @@ public class LhsLighthouseRpcGatewayListManifest
 
   private static final String DEFAULT_RPC_CONTEXT = "LHS RPC CONTEXT";
 
-  @SneakyThrows
-  private LhsLighthouseRpcGatewayResponse.Results deserialize(String value) {
-    return new ObjectMapper().readValue(value, LhsLighthouseRpcGatewayResponse.Results.class);
-  }
-
   @Override
   public LhsLighthouseRpcGatewayResponse fromResults(List<RpcInvocationResult> results) {
+    var reader = new ObjectMapper();
     return LhsLighthouseRpcGatewayResponse.builder()
         .resultsByStation(
             results.stream()
                 .filter(invocationResult -> invocationResult.error().isEmpty())
-                .collect(toMap(r -> r.vista(), r -> deserialize(r.response()))))
+                .collect(toMap(r -> r.vista(), r -> deserialize(reader, r.response()))))
         .build();
   }
 

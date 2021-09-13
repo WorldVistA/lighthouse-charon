@@ -65,19 +65,9 @@ public class LhsLighthouseRpcGatewayCoverageSearchTest {
   }
 
   @Test
-  void patientIds() {
-    assertThat(LhsLighthouseRpcGatewayCoverageSearch.Request.PatientId.forDfn("yyy").toString())
-        .isEqualTo("yyy");
-    assertThat(LhsLighthouseRpcGatewayCoverageSearch.Request.PatientId.forIcn("zzz").toString())
-        .isEqualTo(":zzz");
-  }
-
-  @Test
   void requestAsDetailsWithDfn() {
     var sample =
-        LhsLighthouseRpcGatewayCoverageSearch.Request.builder()
-            .id(LhsLighthouseRpcGatewayCoverageSearch.Request.PatientId.forDfn("zzz"))
-            .build();
+        LhsLighthouseRpcGatewayCoverageSearch.Request.builder().id(PatientId.forDfn("zzz")).build();
     var expected =
         RpcDetails.builder()
             .name(LhsLighthouseRpcGatewayListManifest.RPC_NAME)
@@ -85,7 +75,7 @@ public class LhsLighthouseRpcGatewayCoverageSearchTest {
             .parameters(
                 List.of(
                     RpcDetails.Parameter.builder()
-                        .array(List.of("debugmode^1", "api^search^coverage", "lhsdfn^zzz"))
+                        .array(List.of("debugmode^1", "api^search^coverage", "lhsdfn^zzz:"))
                         .build()))
             .build();
     assertThat(sample.asDetails()).isEqualTo(expected);
@@ -94,9 +84,7 @@ public class LhsLighthouseRpcGatewayCoverageSearchTest {
   @Test
   void requestAsDetailsWithIcn() {
     var sample =
-        LhsLighthouseRpcGatewayCoverageSearch.Request.builder()
-            .id(LhsLighthouseRpcGatewayCoverageSearch.Request.PatientId.forIcn("yyy"))
-            .build();
+        LhsLighthouseRpcGatewayCoverageSearch.Request.builder().id(PatientId.forIcn("yyy")).build();
     var expected =
         RpcDetails.builder()
             .name(LhsLighthouseRpcGatewayListManifest.RPC_NAME)

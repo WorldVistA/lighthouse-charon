@@ -71,6 +71,10 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
 
     private String ien;
 
+    private String index;
+
+    private String status;
+
     private static Optional<String> nonBlankValue(String value) {
       if (StringUtils.isBlank(value)) {
         return Optional.empty();

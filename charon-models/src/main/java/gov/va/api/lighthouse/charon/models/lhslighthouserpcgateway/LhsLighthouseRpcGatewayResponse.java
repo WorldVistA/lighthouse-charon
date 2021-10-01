@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcResponse;
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
+  @JsonIgnoreProperties(ignoreUnknown = true)
   @JsonAutoDetect(
       fieldVisibility = JsonAutoDetect.Visibility.ANY,
       isGetterVisibility = JsonAutoDetect.Visibility.NONE)
@@ -185,10 +187,30 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  @JsonAutoDetect(
+      fieldVisibility = JsonAutoDetect.Visibility.ANY,
+      isGetterVisibility = JsonAutoDetect.Visibility.NONE)
+  public static class Metadata {
+    /** Example: "from": { "#1": "", "#2": "", "IEN": "" }. */
+    private Map<String, String> from;
+
+    private String maxRequested;
+    private Boolean moreFound;
+    private Integer numberFound;
+  }
+
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @JsonIgnoreProperties(ignoreUnknown = true)
   @JsonAutoDetect(
       fieldVisibility = JsonAutoDetect.Visibility.ANY,
       isGetterVisibility = JsonAutoDetect.Visibility.NONE)
   public static class Results {
+
+    private List<Metadata> metadata;
 
     private List<FilemanEntry> results;
 
@@ -248,6 +270,7 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
   @Builder
   @NoArgsConstructor
   @AllArgsConstructor
+  @JsonIgnoreProperties(ignoreUnknown = true)
   @JsonAutoDetect(
       fieldVisibility = JsonAutoDetect.Visibility.ANY,
       isGetterVisibility = JsonAutoDetect.Visibility.NONE)

@@ -1,8 +1,6 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
-import static gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGateway.deoctothorpe;
 import static gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGateway.deserialize;
-import static java.lang.String.join;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
 
@@ -42,7 +40,11 @@ public class LhsLighthouseRpcGatewayListManifest
         .build();
   }
 
-  /** Build an RPC Request using field names. */
+  /**
+   * Build an RPC Request using field names.
+   *
+   * <p>For more information, see docs/fm22_2dg.docx Section 3.5.10
+   */
   @Data
   @Builder
   public static class Request implements TypeSafeRpcRequest {
@@ -68,6 +70,11 @@ public class LhsLighthouseRpcGatewayListManifest
 
     Optional<String> id;
 
+    /** For more information, see docs/fm22_2dg.docx Section 3.5.10 (page 221). */
+    private static String returnInternalAndExternalValues(@NonNull String field) {
+      return field + "IE";
+    }
+
     @Override
     public RpcDetails asDetails() {
       List<String> parameters = new ArrayList<>(11);
@@ -75,7 +82,12 @@ public class LhsLighthouseRpcGatewayListManifest
       parameters.add("api^manifest^list");
       parameters.add("param^FILE^literal^" + file());
       parameters.add("param^IENS^literal^" + iens().orElse(""));
-      parameters.add("param^FIELDS^literal^" + join(";", deoctothorpe(fields())));
+      parameters.add(
+          "param^FIELDS^literal^@;"
+              + fields().stream()
+                  .map(LhsLighthouseRpcGateway::deoctothorpe)
+                  .map(Request::returnInternalAndExternalValues)
+                  .collect(joining(";")));
       parameters.add(
           "param^FLAGS^literal^P"
               + flags().stream().map(ListManifestFlags::flag).collect(joining("")));

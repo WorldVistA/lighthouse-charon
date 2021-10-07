@@ -85,7 +85,7 @@ public class LhsLighthouseRpcGatewayListManifestTest {
         LhsLighthouseRpcGatewayListManifest.Request.builder()
             .file("2")
             .iens(Optional.of("1"))
-            .fields(List.of("#.01", ".3121*"))
+            .fields(List.of("#.01", "2.02"))
             .flags(
                 List.of(
                     LhsLighthouseRpcGatewayListManifest.Request.ListManifestFlags
@@ -116,7 +116,7 @@ public class LhsLighthouseRpcGatewayListManifestTest {
                                 "api^manifest^list",
                                 "param^FILE^literal^2",
                                 "param^IENS^literal^1",
-                                "param^FIELDS^literal^.01;.3121*",
+                                "param^FIELDS^literal^@;.01IE;2.02IE",
                                 "param^FLAGS^literal^PIE",
                                 "param^NUMBER^literal^15",
                                 "param^FROM^list^1^NAME",

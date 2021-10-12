@@ -212,6 +212,7 @@ public class LhsLighthouseRpcGatewayResponse implements TypeSafeRpcResponse {
 
     private List<Metadata> metadata;
 
+    @JsonFormat(with = Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     private List<FilemanEntry> results;
 
     @JsonFormat(with = Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)

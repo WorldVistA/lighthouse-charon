@@ -122,7 +122,7 @@ public class LhsLighthouseRpcGatewayListManifestTest {
                                 "param^FROM^list^1^NAME",
                                 "param^FROM^list^2^1",
                                 "param^FROM^list^IEN^1",
-                                "param^PART^list^1^5",
+                                "param^PART^literal^5",
                                 "param^INDEX^literal^2",
                                 "param^SCREEN^literal^3",
                                 "param^ID^literal^4"))

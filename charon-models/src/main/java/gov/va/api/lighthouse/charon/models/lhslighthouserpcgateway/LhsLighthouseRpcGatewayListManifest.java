@@ -100,7 +100,7 @@ public class LhsLighthouseRpcGatewayListManifest
         parameters.add("param^FROM^literal^");
       }
       if (part().isPresent()) {
-        parameters.add("param^PART^list^1^" + part().get());
+        parameters.add("param^PART^literal^" + part().get());
       } else {
         parameters.add("param^PART^literal^");
       }

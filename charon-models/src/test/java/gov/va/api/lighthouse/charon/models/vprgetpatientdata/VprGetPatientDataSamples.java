@@ -56,11 +56,14 @@ public class VprGetPatientDataSamples {
       var builder = VprGetPatientData.Response.Results.builder().version("1.13").timeZone("-0500");
 
       switch (result.getClass().getSimpleName()) {
-        case "Vitals":
-          builder.vitals((Vitals) result);
+        case "Appointments":
+          builder.appointments((Appointments) result);
           break;
         case "Labs":
           builder.labs((Labs) result);
+          break;
+        case "Vitals":
+          builder.vitals((Vitals) result);
           break;
       }
 

@@ -237,9 +237,20 @@ public class VprGetPatientData
       @JacksonXmlProperty(isAttribute = true)
       private String timeZone;
 
+      @JacksonXmlProperty private Appointments appointments;
+
       @JacksonXmlProperty private Labs labs;
 
       @JacksonXmlProperty private Vitals vitals;
+
+      /** Get a stream of appointments for a patient. */
+      @JsonIgnore
+      public Stream<Appointments.Appointment> appointmentStream() {
+        if (appointments() == null) {
+          return Stream.empty();
+        }
+        return appointments().appointmentResults().stream();
+      }
 
       /** Get a stream of labs for a patient. */
       @JsonIgnore

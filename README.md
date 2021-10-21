@@ -177,8 +177,14 @@ details.
 VistaLink EJB technology is very difficult to mock when compared to REST or SOAP or other HTTP-based communication. Mock
 integration testing will be skipped. Unit tests and live integration tests will be required to validate functionality.
 
-To support synthetic environments, a Mock Charon API will be created, similar to Mock EE. This mock implementation will
-have canned responses based on RPC requests.
+To support synthetic environments, a Mock Charon API will be created, similar to
+[Mock EE](https://github.com/department-of-veterans-affairs/health-apis-mock-eligibility-and-enrollment).
+This mock implementation will have canned responses based on RPC requests.
+
+## Local Development
+
+- Execute `src/scripts/make-configs.sh` (requires `secrets.conf` from a team member)
+- See [lighthouse-vista-docker](https://github.com/department-of-veterans-affairs/lighthouse-vista-docker) for a local VistA instance
 
 ## Manually testing RPCs.
 
@@ -231,8 +237,8 @@ VISTA_RPC={"name":"VPR GET PATIENT DATA JSON","context":"VPR APPLICATION PROXY",
 > Use `localhost` on Linux.
 > See https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds
 
-
 # Additional Considerations
+
 Charon uses VistaLink XOB libraries that are not available in an easy to use Maven repository.
 The `xob-1.6.0.028` module in this repository provides a utility that can be used install
 the required libraries locally.

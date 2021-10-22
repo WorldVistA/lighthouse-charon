@@ -1,0 +1,37 @@
+{
+    "results" : [
+        {
+            "fields" : {
+                "#.01" : {
+                    "ext" : "BCBS OF TX",
+                    "in" : "BCBS OF TX"
+                }
+            },
+            "file" : 36,
+            "ien" : "5,",
+            "status" : 1
+        },
+        {
+            "fields" : {
+                "#.01" : {
+                    "ext" : "COV-1234567",
+                    "in" : "COV-1234567"
+                }
+            },
+            "file" : 365,
+            "ien" : "1,",
+            "status" : 1
+        },
+        {
+            "fields" : {
+                "#17" : {
+                    "ext" : "TESTPAT,SUSAN G",
+                    "in" : "TESTPAT,SUSAN G"
+                }
+            },
+            "file" : 2.312,
+            "ien" : "2,100848,",
+            "status" : 1
+        }
+    ]
+}

@@ -43,8 +43,7 @@ public class LhsLighthouseRpcGatewayListGetsManifest
    * Build an RPC Request using field names.
    *
    * <p>The flags field is ignored by this RPC, and thus omitted.
-   *
-   * */
+   */
   @Data
   @Builder
   public static class Request implements TypeSafeRpcRequest {

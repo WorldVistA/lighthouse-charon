@@ -9,7 +9,7 @@
   </parent>
   <groupId>gov.va.api.lighthouse</groupId>
   <artifactId>charon-api-v1</artifactId>
-  <version>4.0.50-SNAPSHOT</version>
+  <version>4.0.50</version>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>

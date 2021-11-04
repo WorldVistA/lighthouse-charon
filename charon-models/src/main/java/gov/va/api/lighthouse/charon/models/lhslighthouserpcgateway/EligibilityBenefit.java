@@ -8,6 +8,7 @@ import javax.annotation.processing.Generated;
     comments = "Generated using insuranceElementList.xlsx version 183.0.")
 public class EligibilityBenefit {
   public static final String FILE_NUMBER = "365.02";
+  public static final String EB_NUMBER = "#.01";
   public static final String ELIGIBILITY_BENEFIT_INFO = "#.02";
   public static final String COVERAGE_LEVEL = "#.03";
   public static final String INSURANCE_TYPE = "#.05";

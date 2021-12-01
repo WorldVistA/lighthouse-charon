@@ -4,18 +4,18 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>service-starter</artifactId>
-    <version>8.0.28</version>
+    <version>9.0.2</version>
     <relativePath/>
   </parent>
   <groupId>gov.va.api.lighthouse</groupId>
   <artifactId>charon</artifactId>
-  <version>4.0.58-SNAPSHOT</version>
+  <version>5.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
     <docker.imageName>lighthouse-${project.artifactId}</docker.imageName>
     <jacoco.coverage>0.67</jacoco.coverage>
     <master-patient-index-client.version>2.0.8</master-patient-index-client.version>
-    <talos.version>1.0.1</talos.version>
+    <talos.version>2.0.0</talos.version>
   </properties>
   <dependencies>
     <dependency>

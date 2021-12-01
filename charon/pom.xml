@@ -14,7 +14,7 @@
   <properties>
     <docker.imageName>lighthouse-${project.artifactId}</docker.imageName>
     <jacoco.coverage>0.67</jacoco.coverage>
-    <master-patient-index-client.version>2.0.8</master-patient-index-client.version>
+    <master-patient-index-client.version>3.0.0</master-patient-index-client.version>
     <talos.version>2.0.0</talos.version>
   </properties>
   <dependencies>

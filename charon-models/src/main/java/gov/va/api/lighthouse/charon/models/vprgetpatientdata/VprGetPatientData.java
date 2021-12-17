@@ -40,6 +40,13 @@ public class VprGetPatientData
   public VprGetPatientData.Response fromResults(List<RpcInvocationResult> invocationResults) {
     // TO-DO needs to handle different bad result behaviors (e.g. : ignore errors, ignore a
     // percentage, or throw exception on errors.)
+    invocationResults.stream()
+        .map(
+            val -> {
+              System.out.println("INVOCATION RESULT:");
+              System.out.println(val.toString());
+              return val;
+            });
     return Response.builder()
         .resultsByStation(
             invocationResults.stream()
@@ -183,6 +190,7 @@ public class VprGetPatientData
     @Value
     public static class PatientId {
       String dfn;
+
       String icn;
 
       /** You must specify dfn or icn, or both. */
@@ -239,6 +247,8 @@ public class VprGetPatientData
 
       @JacksonXmlProperty private Appointments appointments;
 
+      @JacksonXmlProperty private Medications medications;
+
       @JacksonXmlProperty private Labs labs;
 
       @JacksonXmlProperty private Vitals vitals;
@@ -259,6 +269,15 @@ public class VprGetPatientData
           return Stream.empty();
         }
         return labs().labResults().stream();
+      }
+
+      /** Get a stream of medications for a patient. */
+      @JsonIgnore
+      public Stream<Medications.Medication> medicationStream() {
+        if (medications() == null) {
+          return Stream.empty();
+        }
+        return medications().medicationResults().stream();
       }
 
       /** Get a stream of vitals for a patient. */

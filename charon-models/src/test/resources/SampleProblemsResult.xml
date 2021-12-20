@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="1.13" timeZone="-0500">
+  <problems total="1">
+    <problem>
+      <acuity code="C" name="CHRONIC"/>
+      <codingSystem value="ICD"/>
+      <comment id="333333" enteredBy="PROVIDER,ONE" entered="3100106" commentText="comment"/>
+      <entered value="3110302"/>
+      <exposure value="AO"/>
+      <facility code="673" name="TAMPA (JAH VAH)"/>
+      <icd value="401.9"/>
+      <icdd value="UNSPECIFIED ESSENTIAL HYPERTENSION"/>
+      <id value="886"/>
+      <location value="PRIMARY CARE"/>
+      <name value="HTN (ICD-9-CM 401.9)"/>
+      <onset value="3100106"/>
+      <provider code="983" name="PROVIDER,ONE"/>
+      <removed value="0"/>
+      <resolved value="3110302"/>
+      <sc value="0"/>
+      <sctc value="48694002"/>
+      <sctd value="81133019"/>
+      <sctt value="Anxiety"/>
+      <service value="MEDICINE"/>
+      <status code="A" name="ACTIVE"/>
+      <unverified value="0"/>
+      <updated value="3100406"/>
+    </problem>
+  </problems>
+</results>

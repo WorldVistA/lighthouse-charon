@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="1.13" timeZone="-0500">
+  <visits total="1">
+    <visit>
+      <cpts>
+        <cpt code="10000" name="DRAINAGE OF SKIN LESION"/>
+      </cpts>
+      <creditStopCode code="706" name="ALCOHOL SCREENING"/>
+      <dateTime value="3020416.212042"/>
+      <documents>
+        <document id="312" localTitle="DISCHARGE SUMMARY" nationalTitle="DISCHARGE SUMMARY" vuid="4693715" content="DIAGNOSIS: SANFRANCISCO ADDENDUM PROBLEM"/>
+      </documents>
+      <facility code="673" name="TAMPA (JAH VAH)"/>
+      <icds>
+        <icd code="391.2" name="ACUTE RHEUMATIC MYOCARDITIS" system="ICD" narrative="ACUTE RHEUMATIC MYOCARDITIS" ranking="P"/>
+      </icds>
+      <id value="2552"/>
+      <location value="OBSERVATION"/>
+      <patientClass value="AMB"/>
+      <providers>
+        <provider code="11278" name="WARDCLERK,SIXTYEIGHT" role="P" primary="1" taxonomyCode="203BI0300Y" providerType="Physicians (M.D. and D.O.)" classification="Physician/Osteopath" specialization="Internal Medicine" service="FISCAL"/>
+      </providers>
+      <reason code="391.2" name="ACUTE RHEUMATIC MYOCARDITIS" system="ICD" narrative="ACUTE RHEUMATIC MYOCARDITIS"/>
+      <service value="MEDICINE"/>
+      <serviceCategory code="A" name="AMBULATORY"/>
+      <type code="99211" name="OFFICE/OUTPATIENT VISIT EST"/>
+      <visitString value="289;3020423.192148;A"/>
+      <admission value="3608"/>
+      <arrivalDateTime value="3020416.212042"/>
+      <departureDateTime value="3020416.2141"/>
+      <ptf value="893"/>
+      <roomBed value="2-5"/>
+      <specialty value="GENERAL MEDICINE"/>
+    </visit>
+  </visits>
+</results>

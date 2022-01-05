@@ -65,6 +65,9 @@ public class VprGetPatientDataSamples {
         case "Problems":
           builder.problems((Problems) result);
           break;
+        case "Visits":
+          builder.visits((Visits) result);
+          break;
         case "Vitals":
           builder.vitals((Vitals) result);
           break;

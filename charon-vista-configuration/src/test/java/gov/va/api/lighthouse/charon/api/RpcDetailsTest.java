@@ -3,7 +3,6 @@ package gov.va.api.lighthouse.charon.api;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.lighthouse.charon.api.RpcDetails.Parameter;
 import java.util.List;
@@ -16,7 +15,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class RpcDetailsTest {
-
   static Stream<Arguments> emptyStringsAreParsedFromJsonAsEmptyStrings() {
     return Stream.of(
         Arguments.of(
@@ -42,13 +40,45 @@ public class RpcDetailsTest {
                 .build()));
   }
 
+  @Test
+  @SneakyThrows
+  void emptyArraysAreParsedFromJsonAsEmptyArrays() {
+    var json = "{\"name\":\"MICKY\",\"context\":\"SO FINE\",\"parameters\":[{\"array\":[]}]}";
+    var expected =
+        RpcDetails.builder()
+            .name("MICKY")
+            .context("SO FINE")
+            .parameters(List.of(Parameter.builder().array(List.of()).build()))
+            .build();
+    RpcDetails details = JacksonConfig.createMapper().readValue(json, RpcDetails.class);
+    assertThat(details).isEqualTo(expected);
+    var pretty = JacksonConfig.createMapper();
+    assertThat(pretty.writeValueAsString(details)).isEqualTo(json);
+  }
+
+  @Test
+  @SneakyThrows
+  void emptyNamedArraysAreParsedFromJsonAsEmptyNamedArrays() {
+    var json = "{\"name\":\"MICKY\",\"context\":\"SO FINE\",\"parameters\":[{\"namedArray\":{}}]}";
+    var expected =
+        RpcDetails.builder()
+            .name("MICKY")
+            .context("SO FINE")
+            .parameters(List.of(Parameter.builder().namedArray(Map.of()).build()))
+            .build();
+    RpcDetails details = JacksonConfig.createMapper().readValue(json, RpcDetails.class);
+    assertThat(details).isEqualTo(expected);
+    var pretty = JacksonConfig.createMapper();
+    assertThat(pretty.writeValueAsString(details)).isEqualTo(json);
+  }
+
   @SneakyThrows
   @ParameterizedTest
   @MethodSource
   void emptyStringsAreParsedFromJsonAsEmptyStrings(String json, RpcDetails expected) {
     RpcDetails details = JacksonConfig.createMapper().readValue(json, RpcDetails.class);
     assertThat(details).isEqualTo(expected);
-    var pretty = JacksonConfig.createMapper().setSerializationInclusion(Include.NON_NULL);
+    var pretty = JacksonConfig.createMapper();
     assertThat(pretty.writeValueAsString(details)).isEqualTo(json);
   }
 

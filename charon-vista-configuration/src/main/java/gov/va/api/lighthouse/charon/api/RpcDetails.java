@@ -52,6 +52,7 @@ public class RpcDetails {
   /** Parameter object that handles safely invoking vista requests with parameters. */
   @Data
   @NoArgsConstructor
+  @JsonInclude(Include.NON_NULL)
   @JsonAutoDetect(fieldVisibility = Visibility.ANY, isGetterVisibility = Visibility.NONE)
   public static class Parameter {
     @JsonDeserialize(using = ParameterValueDeserializer.class)

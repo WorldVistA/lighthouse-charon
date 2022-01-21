@@ -28,6 +28,8 @@ class LhsLighthouseRpcGatewayResponseTest {
                 .build()
                 .collectErrors())
         .isEmpty();
+    assertThat(LhsLighthouseRpcGatewayResponse.ResultsError.builder().build().error())
+        .isEqualTo("{}");
     assertThat(
             LhsLighthouseRpcGatewayResponse.builder()
                 .resultsByStation(

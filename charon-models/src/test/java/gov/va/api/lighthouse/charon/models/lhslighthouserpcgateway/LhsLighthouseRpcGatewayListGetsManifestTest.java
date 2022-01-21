@@ -75,6 +75,7 @@ public class LhsLighthouseRpcGatewayListGetsManifestTest {
     assertThat(sample.part()).isEmpty();
     assertThat(sample.index()).isEmpty();
     assertThat(sample.screen()).isEmpty();
+    assertThat(sample.from()).isEmpty();
     assertThat(sample.id()).isEmpty();
   }
 

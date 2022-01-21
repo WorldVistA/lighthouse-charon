@@ -8,6 +8,7 @@
     <Or>
       <Class name="gov.va.api.lighthouse.charon.models.vprgetpatientdata.Appointments"/>
       <Class name="gov.va.api.lighthouse.charon.models.vprgetpatientdata.Labs"/>
+      <Class name="gov.va.api.lighthouse.charon.models.vprgetpatientdata.Meds"/>
       <Class name="gov.va.api.lighthouse.charon.models.vprgetpatientdata.Problems"/>
       <Class name="gov.va.api.lighthouse.charon.models.vprgetpatientdata.Visits"/>
       <Class name="gov.va.api.lighthouse.charon.models.vprgetpatientdata.Vitals"/>

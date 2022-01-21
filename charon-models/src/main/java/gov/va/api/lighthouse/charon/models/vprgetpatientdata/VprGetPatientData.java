@@ -241,6 +241,8 @@ public class VprGetPatientData
 
       @JacksonXmlProperty private Labs labs;
 
+      @JacksonXmlProperty private Meds meds;
+
       @JacksonXmlProperty private Vitals vitals;
 
       @JacksonXmlProperty private Problems problems;
@@ -263,6 +265,15 @@ public class VprGetPatientData
           return Stream.empty();
         }
         return labs().labResults().stream();
+      }
+
+      /** Get a stream of meds for a patient. */
+      @JsonIgnore
+      public Stream<Meds.Med> medStream() {
+        if (meds() == null) {
+          return Stream.empty();
+        }
+        return meds().medResults().stream();
       }
 
       /** Get a stream of problems for a patient. */

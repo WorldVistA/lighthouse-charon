@@ -47,7 +47,7 @@ public interface InsuranceVerificationProcessor {
 
   String INSUREDS_DOB = "#60.08";
 
-  String PT_RELATIONSIP_HIPAA = "#60.14";
+  String PT_RELATIONSHIP_HIPAA = "#60.14";
 
   String PATIENT_ID = "#62.01";
 

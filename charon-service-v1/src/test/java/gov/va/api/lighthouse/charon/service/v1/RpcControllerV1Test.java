@@ -2,6 +2,7 @@ package gov.va.api.lighthouse.charon.service.v1;
 
 import static gov.va.api.lighthouse.charon.service.v1.Samples.connectionDetail;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import gov.va.api.lighthouse.charon.api.RpcDetails;
@@ -62,5 +63,6 @@ class RpcControllerV1Test {
     when(invokerFactory.create(request, connectionDetails)).thenReturn(invoker);
     when(invoker.invoke()).thenReturn(results);
     assertThat(_controller().invoke(request)).isEqualTo(results);
+    verify(invoker).close();
   }
 }

@@ -2,6 +2,7 @@ package gov.va.api.lighthouse.charon.service.v1;
 
 import static gov.va.api.lighthouse.charon.service.v1.Samples.connectionDetail;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import gov.va.api.lighthouse.charon.api.RpcDetails;
@@ -18,6 +19,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class DelegatingRpcInvokerV1Test {
 
   @Mock VistalinkInvoker delegate;
+
+  @Test
+  void closeDelegates() {
+    var details = RpcDetails.builder().build();
+    var invoker = DelegatingRpcInvokerV1.builder().invoker(delegate).details(details).build();
+    invoker.close();
+    verify(delegate).close();
+  }
 
   @Test
   void invokesAndPackagesResponse() {

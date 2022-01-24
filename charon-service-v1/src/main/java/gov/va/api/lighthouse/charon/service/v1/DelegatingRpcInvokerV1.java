@@ -15,6 +15,11 @@ public class DelegatingRpcInvokerV1 implements RpcInvokerV1 {
   private final VistalinkInvoker invoker;
 
   @Override
+  public void close() {
+    invoker.close();
+  }
+
+  @Override
   public RpcInvocationResultV1 invoke() {
     var response = invoker.buildRequestAndInvoke(details);
     return RpcInvocationResultV1.builder()

@@ -3,6 +3,7 @@ package gov.va.api.lighthouse.charon.service.v1;
 import gov.va.api.lighthouse.charon.api.ConnectionDetails;
 import gov.va.api.lighthouse.charon.api.v1.RpcRequestV1;
 import gov.va.api.lighthouse.charon.service.core.MacroEnabledVistalinkInvoker;
+import gov.va.api.lighthouse.charon.service.core.RetryingVistalinkInvoker;
 import gov.va.api.lighthouse.charon.service.core.macro.MacroProcessorFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,12 @@ public class MacroEnabledRpcInvokerFactoryV1 implements RpcInvokerFactoryV1 {
     return DelegatingRpcInvokerV1.builder()
         .details(request.rpc())
         .invoker(
-            MacroEnabledVistalinkInvoker.builder()
-                .rpcPrincipal(request.principal())
-                .macroProcessorFactory(macroProcessorFactory)
-                .connectionDetails(connectionDetails)
-                .build())
+            RetryingVistalinkInvoker.wrap(
+                MacroEnabledVistalinkInvoker.builder()
+                    .rpcPrincipal(request.principal())
+                    .macroProcessorFactory(macroProcessorFactory)
+                    .connectionDetails(connectionDetails)
+                    .build()))
         .build();
   }
 }

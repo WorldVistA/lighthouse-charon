@@ -6,6 +6,7 @@ import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.api.RpcMetadata;
 import gov.va.api.lighthouse.charon.service.core.MacroEnabledVistalinkInvoker;
+import gov.va.api.lighthouse.charon.service.core.RetryingVistalinkInvoker;
 import gov.va.api.lighthouse.charon.service.core.VistalinkInvoker;
 import gov.va.api.lighthouse.charon.service.core.VistalinkSession;
 import gov.va.api.lighthouse.charon.service.core.VistalinkXmlResponse;
@@ -30,12 +31,13 @@ public class VistalinkRpcInvoker implements RpcInvoker, MacroExecutionContext {
       MacroProcessorFactory macroProcessorFactory,
       BiFunction<IsPrincipal, ConnectionDetails, VistalinkSession> optionalSessionSelection) {
     this.invoker =
-        MacroEnabledVistalinkInvoker.builder()
-            .rpcPrincipal(rpcPrincipal)
-            .connectionDetails(connectionDetails)
-            .macroProcessorFactory(macroProcessorFactory)
-            .optionalSessionSelection(optionalSessionSelection)
-            .build();
+        RetryingVistalinkInvoker.wrap(
+            MacroEnabledVistalinkInvoker.builder()
+                .rpcPrincipal(rpcPrincipal)
+                .connectionDetails(connectionDetails)
+                .macroProcessorFactory(macroProcessorFactory)
+                .optionalSessionSelection(optionalSessionSelection)
+                .build());
   }
 
   @Override

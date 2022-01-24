@@ -63,7 +63,7 @@ public class ApplicationProxyUserVistalinkSession implements VistalinkSession {
     try {
       connection.close();
     } catch (Exception e) {
-      log.warn("Failed to closeconnection ({})", hashCode(), e);
+      log.warn("Failed to close connection ({})", hashCode(), e);
     }
     connection = null;
   }

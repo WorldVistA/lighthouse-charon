@@ -31,7 +31,8 @@ public class RpcControllerV1 {
   public RpcInvocationResultV1 invoke(@Redact @RequestBody @Valid RpcRequestV1 request) {
     log.info("Request: {}", encryptedLogging.encrypt(request.toString()));
     var connectionDetails = vistaResolver.resolve(request.vista());
-    var invoker = invokerFactory.create(request, connectionDetails);
-    return invoker.invoke();
+    try (var invoker = invokerFactory.create(request, connectionDetails)) {
+      return invoker.invoke();
+    }
   }
 }

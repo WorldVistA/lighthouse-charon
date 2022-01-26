@@ -136,7 +136,7 @@ public class Meds {
     @Data
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    static class Product {
+    public static class Product {
       @JacksonXmlProperty(isAttribute = true)
       String code;
 
@@ -166,7 +166,7 @@ public class Meds {
       @Data
       @JsonInclude(JsonInclude.Include.NON_EMPTY)
       @NoArgsConstructor(access = AccessLevel.PRIVATE)
-      static class ProductDetail {
+      public static class ProductDetail {
         @JacksonXmlProperty(isAttribute = true)
         String code;
 
@@ -183,7 +183,7 @@ public class Meds {
     @Data
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    static class Fill {
+    public static class Fill {
       @JacksonXmlProperty(isAttribute = true)
       String fillDate;
 
@@ -205,7 +205,7 @@ public class Meds {
     @Data
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    static class Provider {
+    public static class Provider {
       @JacksonXmlProperty(isAttribute = true)
       String code;
 
@@ -245,7 +245,7 @@ public class Meds {
     @Data
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    static class Dose {
+    public static class Dose {
       @JacksonXmlProperty(isAttribute = true)
       String dose;
 

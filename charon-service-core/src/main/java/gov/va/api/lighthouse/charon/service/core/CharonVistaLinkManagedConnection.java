@@ -27,6 +27,6 @@ public class CharonVistaLinkManagedConnection extends VistaLinkManagedConnection
    * are so many, e.g., socketTimeout() + 2.
    */
   public static int socketTimeout() {
-    return 10000;
+    return EnvironmentConfiguration.defaultTimeoutMillis();
   }
 }

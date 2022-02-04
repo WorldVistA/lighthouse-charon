@@ -25,7 +25,7 @@ public class RetryingVistalinkInvoker implements VistalinkInvoker {
   public static RetryingVistalinkInvoker wrap(VistalinkInvoker wrapMe) {
     return RetryingVistalinkInvoker.builder()
         .delegate(wrapMe)
-        .maxRetries(3)
+        .maxRetries(EnvironmentConfiguration.defaultRetries())
         .retryChecks(RetryChecks.defaultRetryChecks())
         .build();
   }

@@ -17,6 +17,8 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -108,9 +110,19 @@ class RetryingVistalinkInvokerTest {
                 RetryingVistalinkInvoker.wrap(delegate).invoke(RpcRequestFactory.getRpcRequest()));
   }
 
+  @BeforeEach
+  void setSystemProperties() {
+    System.setProperty("charon.vista.retries", "3");
+  }
+
   private Answer<Object> throwCheckedException(Exception e) {
     return invocationOnMock -> {
       throw e;
     };
+  }
+
+  @AfterEach
+  void unsetSystemProperties() {
+    System.clearProperty("charon.vista.retries");
   }
 }

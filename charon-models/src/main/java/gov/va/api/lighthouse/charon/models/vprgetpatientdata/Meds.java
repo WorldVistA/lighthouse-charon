@@ -102,6 +102,14 @@ public class Meds {
     @JacksonXmlElementWrapper(localName = "products")
     List<Product> product;
 
+    /** Lazy Initializer. */
+    public List<Product> product() {
+      if (product == null) {
+        product = new ArrayList<>();
+      }
+      return product;
+    }
+
     @JacksonXmlProperty ValueOnlyXmlAttribute ptInstructions;
 
     @JacksonXmlProperty ValueOnlyXmlAttribute quantity;

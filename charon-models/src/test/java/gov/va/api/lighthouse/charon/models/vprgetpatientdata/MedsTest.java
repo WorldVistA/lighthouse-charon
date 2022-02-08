@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.models.CodeAndNameXmlAttribute;
 import gov.va.api.lighthouse.charon.models.ValueOnlyXmlAttribute;
+import gov.va.api.lighthouse.charon.models.vprgetpatientdata.Meds.Med;
+import gov.va.api.lighthouse.charon.models.vprgetpatientdata.Meds.Med.Product;
 import io.micrometer.core.instrument.util.IOUtils;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -183,5 +185,13 @@ public class MedsTest {
             .medStream()
             .collect(Collectors.toList());
     assertThat(sample).isEqualTo(medsSamples.medResults());
+  }
+
+  @Test
+  void productIsEmpty() {
+    Med medNullProduct = Med.builder().product(null).build();
+    Med medEmptyProduct = Med.builder().product(List.of()).build();
+    assertThat(medNullProduct.product()).isEmpty();
+    assertThat(medEmptyProduct.product()).isEmpty();
   }
 }

@@ -23,6 +23,8 @@ public interface InsuranceVerificationProcessor {
 
   String PRECERTIFICATION_PHONE_NUMBER = "#20.04";
 
+  String REIMBURSE = "#20.05";
+
   String STREET_ADDRESS_LINE_1 = "#21.01";
 
   String STREET_ADDRESS_LINE_2 = "#21.02";
@@ -35,6 +37,18 @@ public interface InsuranceVerificationProcessor {
 
   String ZIP_CODE = "#21.06";
 
+  String IS_THIS_A_GROUP_POLICY = "#40.01";
+
+  String UTILIZATION_REVIEW_REQUIRED = "#40.04";
+
+  String PRECERTIFICATION_REQUIRED = "#40.05";
+
+  String AMBULATORY_CARE_CERTIFICATION = "#40.06";
+
+  String EXCLUDE_PREEXISTING_CONDITION = "#40.07";
+
+  String BENEFITS_ASSIGNABLE = "#40.08";
+
   String TYPE_OF_PLAN = "#40.09";
 
   String BANKING_IDENTIFICATION_NUMBER = "#40.1";
@@ -43,11 +57,29 @@ public interface InsuranceVerificationProcessor {
 
   String PATIENT_NAME = "#60.01";
 
+  String EFFECTIVE_DATE = "#60.02";
+
+  String EXPIRATION_DATE = "#60.03";
+
   String WHOSE_INSURANCE = "#60.05";
 
   String INSUREDS_DOB = "#60.08";
 
+  String INSUREDS_SSN = "#60.09";
+
+  String PRIMARY_CARE_PROVIDER = "#60.1";
+
+  String PRIMARY_PROVIDER_PHONE = "#60.11";
+
+  String COORDINATION_OF_BENEFITS = "#60.12";
+
+  String INSUREDS_SEX = "#60.13";
+
   String PT_RELATIONSHIP_HIPAA = "#60.14";
+
+  String PHARMACY_RELATIONSHIP_CODE = "#60.15";
+
+  String PHARMACY_PERSON_CODE = "#60.16";
 
   String PATIENT_ID = "#62.01";
 

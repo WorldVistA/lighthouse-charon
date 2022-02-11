@@ -83,6 +83,8 @@ public class RpcPrincipalsV1 {
   public static class PrincipalEntry {
     @NotEmpty private List<String> rpcNames;
 
+    private List<String> tags;
+
     @NotNull @NotBlank private String applicationProxyUser;
 
     @NotEmpty private List<Codes> codes;
@@ -107,6 +109,14 @@ public class RpcPrincipalsV1 {
         rpcNames = new ArrayList<>();
       }
       return rpcNames;
+    }
+
+    /** Lazy getter. */
+    public List<String> tags() {
+      if (tags == null) {
+        tags = new ArrayList<>();
+      }
+      return tags;
     }
   }
 }

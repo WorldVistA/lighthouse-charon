@@ -6,6 +6,11 @@
                 "NACHO",
                 "BURRITO"
             ],
+            "tags" : [
+                "Mexican",
+                "FRIDAYS",
+                "_yummy"
+            ],
             "applicationProxyUser" : "MEXICAN!",
             "codes" : [
                 {

@@ -146,6 +146,12 @@ public class RpcPrincipalsV1Test {
   }
 
   @Test
+  void findByTag() {
+    assertThat(_testPrincipals().findByTag("FRIDAYS")).isEqualTo(_mexican());
+    assertThat(_testPrincipals().findByTag("MONDAYS")).isEqualTo(Map.of());
+  }
+
+  @Test
   void isRpcNamesUnique() {
     assertThat(
             RpcPrincipalsV1.builder()

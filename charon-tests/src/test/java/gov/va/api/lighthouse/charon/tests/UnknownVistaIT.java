@@ -2,10 +2,8 @@ package gov.va.api.lighthouse.charon.tests;
 
 import static gov.va.api.lighthouse.charon.tests.TestOptions.assumeVistaIsAvailable;
 
-import gov.va.api.lighthouse.charon.api.RpcRequest;
-import gov.va.api.lighthouse.charon.api.RpcResponse;
-import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
-import java.util.List;
+import gov.va.api.lighthouse.charon.api.v1.ErrorResponseV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcRequestV1;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -16,16 +14,16 @@ public class UnknownVistaIT {
   @SneakyThrows
   void requestUnkonwnVistaWith400() {
     assumeVistaIsAvailable();
-    RpcRequest body =
-        RpcRequest.builder()
+    RpcRequestV1 body =
+        RpcRequestV1.builder()
             .rpc(SystemDefinitions.get().testRpcs().pingRpc())
             .principal(SystemDefinitions.get().avCodePrincipal())
-            .target(RpcVistaTargets.builder().include(List.of("who dis")).build())
+            .vista("who dis")
             .build();
     var response =
-        TestClients.rpcRequest(SystemDefinitions.get().charon().apiPath() + "rpc", body)
+        TestClients.rpcRequest(SystemDefinitions.get().charon().apiPath() + "v1/rpc", body)
             .expect(400)
-            .expectValid(RpcResponse.class);
+            .expectValid(ErrorResponseV1.class);
     log.info(response.toString());
   }
 }

@@ -1,14 +1,13 @@
 {
   "principal": {
+    "applicationProxyUser":"$VISTA_APPLICATION_PROXY_USER",
     "accessCode":"$VISTA_ACCESS_CODE",
     "verifyCode":"$VISTA_VERIFY_CODE"
   },
-  "target": {
-    "forPatient":"ignored-for-now"
-  },
+  "vista" : "$VISTA_SITE",
   "rpc": {
     "name":"VPR GET PATIENT DATA",
-    "context":"VPR APPLICATION PROXY",
+    "context":"LHS RPC CONTEXT",
     "parameters": [
       {"string":";195607"},
       {"string":"demographics;vitals"},

@@ -1,7 +1,5 @@
 package gov.va.api.lighthouse.charon.models;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +14,6 @@ public interface EntryParser<E> {
       throw new IllegalArgumentException(
           "Cannot parse a new line delimited string with value: null");
     }
-    return Arrays.stream(nldString.split("\\n", -1)).map(this::parseLine).collect(toList());
+    return Arrays.stream(nldString.split("\\n", -1)).map(this::parseLine).toList();
   }
 }

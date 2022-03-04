@@ -4,14 +4,6 @@ set -euo pipefail
 TEMPLATE=${1:-}
 PORT=8050
 
-SECRETS_CONF="${SHANKTOSECRETS:-~/va/shanktosecrets}/vistalink/vista-vm.conf"
-if [ -z "${VISTA_ACCESS_CODE:-}" -a -f "$SECRETS_CONF" ]
-then
-  . "$SECRETS_CONF"
-fi
-
-test -n "$VISTA_ACCESS_CODE"
-test -n "$VISTA_VERIFY_CODE"
 
 usage() {
 cat<<EOF
@@ -33,17 +25,26 @@ POST_ME=$(mktemp)
 onExit() { rm $POST_ME; }
 trap onExit EXIT
 
+
+PROBLEMS=0
+for templateVar in $(grep '\$.' $TEMPLATE | sed 's/.*\$\([A-Za-z0-9_]\+\).*/\1/')
+do
+  if [ -z "${!templateVar:-}" ]; then echo "Template variable not defined: $templateVar"; let PROBLEMS+=1; fi
+done
+if [ $PROBLEMS != 0 ]; then exit 1; fi
+
 cat $TEMPLATE | envsubst > $POST_ME
-if [ "${LOG_REQUEST:-false}" == true ]
-then
-  echo "REQUEST:"
-  cat $POST_ME |  jq '.' | sed -e 's/"\(access\|verify\)Code":.*/"\1Code": "REDACTED"/'
-fi
+
+LOG_REQUEST=${LOG_REQUEST:-false}
+case ${LOG_REQUEST,,} in
+  on|true|r*) cat $POST_ME |  jq . | sed -e 's/"\(access\|verify\)Code":.*/"\1Code": "REDACTED"/';;
+  clear) jq . $POST_ME;;
+esac
 
 curl \
   -s \
   -XPOST \
   -H"Content-Type:application/json" \
   --data @$POST_ME \
-  ${URL:-http://localhost:$PORT/rpc} \
+  ${URL:-http://localhost:$PORT/v1/rpc} \
   $@

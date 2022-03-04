@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+principals=$(mktemp -p . principals-XXXX.json)
+trap "rm $principals" EXIT
+
+cat > $principals <<EOF
+{
+  "entries": [
+    {
+      "rpcNames": [
+        "LHS CHECK OPTION ACCESS",
+        "VPR GET PATIENT DATA",
+        "LHS LIGHTHOUSE RPC GATEWAY"
+      ],
+      "applicationProxyUser": "$(s vfq.vista.application-proxy-user)",
+      "codes": [
+        {
+          "sites": [
+            "673"
+          ],
+          "accessCode": "$(s vfq.local.vista.access-code)",
+          "verifyCode": "$(s vfq.local.vista.verify-code)"
+        }
+      ]
+    }
+  ]
+}
+EOF
+
+cat $principals
+
+
+mvn clean install \
+ -Dvista.is-available=true \
+ -Dvista.standard-user.access-code="$(s vfq.local.av.vista.access-code)" \
+ -Dvista.standard-user.verify-code="$(s vfq.local.av.vista.verify-code)" \
+ -Dcharon.rpc-principals.file=$(readlink -f $principals) \
+ $@

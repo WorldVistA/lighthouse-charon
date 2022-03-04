@@ -4,9 +4,8 @@ import static gov.va.api.lighthouse.charon.tests.TestOptions.assumeVistaIsAvaila
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-import gov.va.api.lighthouse.charon.api.RpcRequest;
-import gov.va.api.lighthouse.charon.api.RpcResponse;
-import gov.va.api.lighthouse.charon.api.RpcResponse.Status;
+import gov.va.api.lighthouse.charon.api.v1.RpcInvocationResultV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcRequestV1;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -29,17 +28,17 @@ public class PingIT {
   @SneakyThrows
   void requestRpcNoArguments() {
     assumeVistaIsAvailable();
-    RpcRequest body =
-        RpcRequest.builder()
+    RpcRequestV1 body =
+        RpcRequestV1.builder()
             .rpc(SystemDefinitions.get().testRpcs().pingRpc())
             .principal(SystemDefinitions.get().avCodePrincipal())
-            .target(SystemDefinitions.get().testTargets())
+            .vista(SystemDefinitions.get().vistaSite())
             .build();
     var response =
-        TestClients.rpcRequest(SystemDefinitions.get().charon().apiPath() + "rpc", body)
+        TestClients.rpcRequest(SystemDefinitions.get().charon().apiPath() + "v1/rpc", body)
             .expect(200)
-            .expectValid(RpcResponse.class);
-    assertThat(response.status()).isEqualTo(Status.OK);
+            .expectValid(RpcInvocationResultV1.class);
+    assertThat(response.response()).isNotEmpty();
     log.info(response.toString());
   }
 }

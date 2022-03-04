@@ -2,6 +2,7 @@ package gov.va.api.lighthouse.charon.models.vprgetpatientdata;
 
 import gov.va.api.lighthouse.charon.models.CodeAndNameXmlAttribute;
 import gov.va.api.lighthouse.charon.models.ValueOnlyXmlAttribute;
+import gov.va.api.lighthouse.charon.models.vprgetpatientdata.VprGetPatientData.Response.Results;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -107,20 +108,32 @@ public class VitalsSamples {
     return VprGetPatientData.Response.builder().resultsByStation(resultsByStation()).build();
   }
 
-  public Map<String, VprGetPatientData.Response.Results> resultsByStation() {
-    return VprGetPatientDataSamples.Response.create()
-        .resultsByStation(Vitals.builder().total(1).vitalResults(vitals()).build());
+  public Map<String, Results> resultsByStation() {
+    return VprGetPatientDataSamples.Response.create().resultsByStation(vitals());
   }
 
-  public List<Vitals.Vital> vitals() {
-    return List.of(
-        Vitals.Vital.builder()
-            .entered(ValueOnlyXmlAttribute.builder().value("3110225.110428").build())
-            .facility(CodeAndNameXmlAttribute.builder().code("673").name("TAMPA (JAH VAH)").build())
-            .location(CodeAndNameXmlAttribute.builder().code("23").name("GENERAL MEDICINE").build())
-            .measurements(measurements())
-            .taken(ValueOnlyXmlAttribute.builder().value("3100406.14").build())
-            .removed(List.of(ValueOnlyXmlAttribute.builder().value("INVALID RECORD").build()))
-            .build());
+  public Vitals vitals() {
+    return Vitals.builder()
+        .total(1)
+        .vitalResults(
+            List.of(
+                Vitals.Vital.builder()
+                    .entered(ValueOnlyXmlAttribute.builder().value("3110225.110428").build())
+                    .facility(
+                        CodeAndNameXmlAttribute.builder()
+                            .code("673")
+                            .name("TAMPA (JAH VAH)")
+                            .build())
+                    .location(
+                        CodeAndNameXmlAttribute.builder()
+                            .code("23")
+                            .name("GENERAL MEDICINE")
+                            .build())
+                    .measurements(measurements())
+                    .taken(ValueOnlyXmlAttribute.builder().value("3100406.14").build())
+                    .removed(
+                        List.of(ValueOnlyXmlAttribute.builder().value("INVALID RECORD").build()))
+                    .build()))
+        .build();
   }
 }

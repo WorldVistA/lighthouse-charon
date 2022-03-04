@@ -1,28 +1,21 @@
 package gov.va.api.lighthouse.charon.service.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.api.lighthouse.charon.api.RpcDetails;
-import gov.va.api.lighthouse.charon.api.RpcPrincipal;
-import gov.va.api.lighthouse.charon.api.RpcRequest;
-import gov.va.api.lighthouse.charon.api.RpcResponse.Status;
-import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
-import gov.va.api.lighthouse.charon.api.VistalinkProperties;
-import gov.va.api.lighthouse.charon.service.config.EncyptedLoggingConfig.DisabledEncryptedLogging;
+import gov.va.api.lighthouse.charon.api.UnknownVista;
 import gov.va.api.lighthouse.charon.service.core.UnrecoverableVistalinkExceptions;
 import gov.va.api.lighthouse.charon.service.core.UnrecoverableVistalinkExceptions.LoginFailure;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,6 +26,8 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.annotation.ExceptionHandlerMethodResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
@@ -40,34 +35,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHan
 
 @Slf4j
 public class WebExceptionHandlerTest {
-  RpcExecutor executor = mock(RpcExecutor.class);
+  WebExceptionHandler exceptionHandler = new WebExceptionHandler();
 
-  private RpcController controller =
-      new RpcController(
-          executor, VistalinkProperties.builder().build(), new DisabledEncryptedLogging());
-
-  private WebExceptionHandler exceptionHandler = new WebExceptionHandler();
-
+  @SuppressWarnings("unused")
   public static Stream<Arguments> expectStatus() {
     return Stream.of(
-        arguments(
-            HttpStatus.BAD_REQUEST, Status.FAILED, new HttpMessageConversionException("FUGAZI")),
-        arguments(HttpStatus.BAD_REQUEST, Status.FAILED, new InvalidRequest("FUGAZI")),
-        arguments(HttpStatus.UNAUTHORIZED, Status.FAILED, new LoginFailure("FUGAZI")),
-        arguments(HttpStatus.REQUEST_TIMEOUT, Status.FAILED, new TimeoutException("FUGAZI")),
-        arguments(
-            HttpStatus.BAD_REQUEST, Status.FAILED, new VistaLinkExceptions.UnknownVista("FUGAZI")),
-        arguments(
-            HttpStatus.BAD_REQUEST,
-            Status.VISTA_RESOLUTION_FAILURE,
-            new VistaLinkExceptions.UnknownPatient(Fugazi.FUGAZI, "FUGAZI")),
-        arguments(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            Status.VISTA_RESOLUTION_FAILURE,
-            new VistaLinkExceptions.NameResolutionException(Fugazi.FUGAZI, null, null)),
+        arguments(HttpStatus.BAD_REQUEST, new HttpMessageConversionException("FUGAZI")),
+        arguments(HttpStatus.UNAUTHORIZED, new LoginFailure("FUGAZI")),
+        arguments(HttpStatus.REQUEST_TIMEOUT, new TimeoutException("FUGAZI")),
+        arguments(HttpStatus.BAD_REQUEST, new UnknownVista("FUGAZI")),
         arguments(
             HttpStatus.FORBIDDEN,
-            Status.FAILED,
             new UnrecoverableVistalinkExceptions.BadRpcContext("FUGAZI", new Throwable("FUGAZI"))));
   }
 
@@ -76,7 +54,7 @@ public class WebExceptionHandlerTest {
         new ExceptionHandlerExceptionResolver() {
           @Override
           protected ServletInvocableHandlerMethod getExceptionHandlerMethod(
-              HandlerMethod handlerMethod, Exception ex) {
+              HandlerMethod handlerMethod, @NonNull Exception ex) {
             Method method =
                 new ExceptionHandlerMethodResolver(WebExceptionHandler.class).resolveMethod(ex);
             assertThat(method).isNotNull();
@@ -92,44 +70,36 @@ public class WebExceptionHandlerTest {
   @SneakyThrows
   @ParameterizedTest
   @MethodSource
-  void expectStatus(HttpStatus httpStatus, Status responseStatus, Exception e) {
-    when(executor.execute(any()))
-        .thenAnswer(
-            i -> {
-              throw e;
-            });
+  void expectStatus(HttpStatus httpStatus, Exception e) {
     MockMvc mockMvc =
-        MockMvcBuilders.standaloneSetup(controller)
+        MockMvcBuilders.standaloneSetup(new FugaziController(e))
             .setHandlerExceptionResolvers(createExceptionResolver())
             .setMessageConverters(
                 new MappingJackson2HttpMessageConverter(JacksonConfig.createMapper()))
             .build();
 
-    var body =
-        RpcRequest.builder()
-            .principal(RpcPrincipal.builder().accessCode("whatever").verifyCode("whatever").build())
-            .target(RpcVistaTargets.builder().forPatient("1234v5678").build())
-            .rpc(
-                RpcDetails.builder()
-                    .name("XOBV TEST PING")
-                    .context("XOBV VISTALINK TESTER")
-                    .build())
-            .build();
-
     var response =
         mockMvc
-            .perform(
-                post("/rpc")
-                    .contentType("application/json")
-                    .content(JacksonConfig.createMapper().writeValueAsString(body)))
+            .perform(get("/hi").contentType("application/json"))
             .andExpect(status().is(httpStatus.value()))
-            .andExpect(jsonPath("status", equalTo(responseStatus.toString())))
+            .andExpect(jsonPath("error", notNullValue()))
             .andReturn()
             .getResponse();
     log.error("response: {}", response.getContentAsString());
   }
 
-  enum Fugazi {
-    FUGAZI;
+  @AllArgsConstructor
+  @RestController
+  static class FugaziController {
+    Throwable e;
+
+    @SneakyThrows
+    @GetMapping("/hi")
+    String hi() {
+      if (e != null) {
+        throw e;
+      }
+      return "hi";
+    }
   }
 }

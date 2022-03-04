@@ -1,14 +1,12 @@
 package gov.va.api.lighthouse.charon.models.vprgetpatientdata;
 
+import static gov.va.api.lighthouse.charon.models.vprgetpatientdata.VprGetPatientDataAsserts.assertDeserializedEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.models.CodeAndNameXmlAttribute;
 import gov.va.api.lighthouse.charon.models.ValueOnlyXmlAttribute;
-import io.micrometer.core.instrument.util.IOUtils;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -40,7 +38,7 @@ public class VitalsTest {
             true),
         Arguments.of(
             Vitals.Vital.builder().taken(ValueOnlyXmlAttribute.builder().build()).build(), true),
-        Arguments.of(VitalsSamples.create().vitals().get(0), true));
+        Arguments.of(VitalsSamples.create().vitals().vitalResults().get(0), true));
   }
 
   @Test
@@ -52,13 +50,14 @@ public class VitalsTest {
 
   @SneakyThrows
   @Test
-  public void fromResultsDeserializeValidVprGetPatientDataResponse() {
-    String invocationResponse =
-        IOUtils.toString(getClass().getResourceAsStream("/SampleVitalsResult.xml"));
-    RpcInvocationResult invocationResult =
-        RpcInvocationResult.builder().vista("673").response(invocationResponse).build();
-    assertThat(VprGetPatientData.create().fromResults(List.of(invocationResult)))
-        .isEqualTo(samples.response());
+  public void deserialize() {
+    assertDeserializedEquals(
+        "/SampleVitalsResult.xml",
+        VprGetPatientData.Response.Results.builder()
+            .version("1.13")
+            .timeZone("-0500")
+            .vitals(samples.vitals())
+            .build());
   }
 
   @ParameterizedTest
@@ -70,13 +69,7 @@ public class VitalsTest {
   @Test
   void vitalStream() {
     assertThat(VprGetPatientData.Response.Results.builder().build().vitalStream()).isEmpty();
-    assertThat(
-            samples
-                .response()
-                .resultsByStation()
-                .get("673")
-                .vitalStream()
-                .collect(Collectors.toList()))
-        .isEqualTo(samples.vitals());
+    assertThat(samples.response().resultsByStation().get("673").vitalStream())
+        .containsExactlyElementsOf(samples.vitals().vitalResults());
   }
 }

@@ -1,11 +1,11 @@
 package gov.va.api.lighthouse.charon.service.config;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
-import gov.va.api.lighthouse.charon.api.RpcPrincipal;
-import gov.va.api.lighthouse.charon.api.RpcPrincipalLookup;
-import gov.va.api.lighthouse.charon.api.RpcPrincipals;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalLookupV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalsV1;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +13,12 @@ public class RpcPrincipalsConfigTest {
 
   @Test
   void loadPrincipals() {
-    RpcPrincipalLookup testPrincipals =
+    RpcPrincipalLookupV1 testPrincipals =
         new RpcPrincipalConfig().loadPrincipals("src/test/resources/principals.json");
     assertThat(testPrincipals.findByNameAndSite("SASHIMI", "222-A"))
         .isEqualTo(
             Optional.of(
-                RpcPrincipal.builder()
+                RpcPrincipalV1.builder()
                     .applicationProxyUser("ASIAN!")
                     .accessCode("ASIAN_FOOD")
                     .verifyCode("IS_STILL_GREAT")
@@ -35,6 +35,6 @@ public class RpcPrincipalsConfigTest {
   void validate() {
     assertThatExceptionOfType(IllegalArgumentException.class)
         .isThrownBy(
-            () -> new RpcPrincipalConfig().validate(RpcPrincipals.builder().build(), "whatever"));
+            () -> new RpcPrincipalConfig().validate(RpcPrincipalsV1.builder().build(), "whatever"));
   }
 }

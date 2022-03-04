@@ -1,10 +1,9 @@
 package gov.va.api.lighthouse.charon.models.vprgetpatientdata;
 
+import static gov.va.api.lighthouse.charon.models.vprgetpatientdata.VprGetPatientDataAsserts.assertDeserializedEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.models.CodeAndNameXmlAttribute;
-import io.micrometer.core.instrument.util.IOUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,10 +30,13 @@ public class VisitsTest {
   @SneakyThrows
   @Test
   void deserialize() {
-    var xml = IOUtils.toString(getClass().getResourceAsStream("/SampleVisitsResult.xml"));
-    var result = RpcInvocationResult.builder().vista("673").response(xml).build();
-    assertThat(VprGetPatientData.create().fromResults(List.of(result)))
-        .isEqualTo(VprGetPatientDataSamples.Response.create().responseFor(visitsSamples.visits()));
+    assertDeserializedEquals(
+        "/SampleVisitsResult.xml",
+        VprGetPatientData.Response.Results.builder()
+            .version("1.13")
+            .timeZone("-0500")
+            .visits(visitsSamples.visits())
+            .build());
   }
 
   @ParameterizedTest

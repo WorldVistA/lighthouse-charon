@@ -26,7 +26,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
-/** Container class for specific rpc details that the RpcInvoker needs to make a vista request. */
+/** Container class for specific rpc details needed to make a vista request. */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor

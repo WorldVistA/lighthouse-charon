@@ -31,9 +31,9 @@ public class PathRewriteConfigTest {
   void pathIsRewritten() {
     assertThat(
         restTemplate.getForObject(
-            "http://localhost:" + port + "/charon/rpc/connections", VistalinkProperties.class));
+            "http://localhost:" + port + "/charon/v1/rpc/connections", VistalinkProperties.class));
     assertThat(
         restTemplate.getForObject(
-            "http://localhost:" + port + "/rpc/connections", VistalinkProperties.class));
+            "http://localhost:" + port + "/v1/rpc/connections", VistalinkProperties.class));
   }
 }

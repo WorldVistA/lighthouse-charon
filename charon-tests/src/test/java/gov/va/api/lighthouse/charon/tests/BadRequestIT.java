@@ -2,7 +2,7 @@ package gov.va.api.lighthouse.charon.tests;
 
 import static gov.va.api.lighthouse.charon.tests.TestOptions.assumeVistaIsAvailable;
 
-import gov.va.api.lighthouse.charon.api.RpcResponse;
+import gov.va.api.lighthouse.charon.api.v1.ErrorResponseV1;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -17,9 +17,10 @@ public class BadRequestIT {
     String body = "{\"message\": \"Im a malformed request.\"}";
     var response =
         TestClients.charon()
-            .post(TestClients.headers(), SystemDefinitions.get().charon().apiPath() + "rpc", body)
+            .post(
+                TestClients.headers(), SystemDefinitions.get().charon().apiPath() + "v1/rpc", body)
             .expect(400)
-            .expectValid(RpcResponse.class);
+            .expectValid(ErrorResponseV1.class);
     log.info(response.toString());
   }
 }

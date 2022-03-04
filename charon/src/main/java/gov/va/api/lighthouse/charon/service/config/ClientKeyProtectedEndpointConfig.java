@@ -2,12 +2,11 @@ package gov.va.api.lighthouse.charon.service.config;
 
 import static gov.va.api.lighthouse.talos.Responses.unauthorizedAsJson;
 
-import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.api.lighthouse.charon.api.RpcResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.va.api.lighthouse.charon.api.v1.ErrorResponseV1;
 import gov.va.api.lighthouse.talos.ClientKeyProtectedEndpointFilter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
@@ -62,11 +61,11 @@ public class ClientKeyProtectedEndpointConfig {
 
   @SneakyThrows
   private Consumer<HttpServletResponse> unauthorizedResponse() {
-    var response =
-        RpcResponse.builder()
-            .status(RpcResponse.Status.FAILED)
-            .message(Optional.of("Unauthorized: Check the client-key header."))
-            .build();
-    return unauthorizedAsJson(JacksonConfig.createMapper().writeValueAsString(response));
+    return unauthorizedAsJson(
+        new ObjectMapper()
+            .writeValueAsString(
+                ErrorResponseV1.builder()
+                    .error("Unauthorized: Check the client-key header.")
+                    .build()));
   }
 }

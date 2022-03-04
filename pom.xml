@@ -9,11 +9,10 @@
   </parent>
   <groupId>gov.va.api.lighthouse</groupId>
   <artifactId>charon-parent</artifactId>
-  <version>5.0.15-SNAPSHOT</version>
+  <version>6.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
     <module>charon-vista-configuration</module>
-    <module>charon-api</module>
     <module>charon-api-v1</module>
     <module>charon-service-core</module>
     <module>charon-service-v1</module>

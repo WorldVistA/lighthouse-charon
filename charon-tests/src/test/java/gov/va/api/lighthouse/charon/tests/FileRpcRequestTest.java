@@ -4,14 +4,11 @@ import static gov.va.api.lighthouse.charon.tests.TestOptions.assumeEnabled;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.api.lighthouse.charon.api.RpcRequest;
-import gov.va.api.lighthouse.charon.api.RpcResponse;
-import gov.va.api.lighthouse.charon.api.VistalinkProperties;
-import gov.va.api.lighthouse.charon.service.controller.AllVistaNameResolver;
+import gov.va.api.lighthouse.charon.api.ConnectionDetailsParser;
+import gov.va.api.lighthouse.charon.api.v1.RpcRequestV1;
 import gov.va.api.lighthouse.charon.service.controller.LocalDateMacro;
-import gov.va.api.lighthouse.charon.service.controller.ParallelRpcExecutor;
-import gov.va.api.lighthouse.charon.service.controller.VistalinkRpcInvokerFactory;
 import gov.va.api.lighthouse.charon.service.core.macro.MacroProcessorFactory;
+import gov.va.api.lighthouse.charon.service.v1.MacroEnabledRpcInvokerFactoryV1;
 import java.io.File;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -28,20 +25,35 @@ public class FileRpcRequestTest {
   void invokeRequest() {
     assumeEnabled("test.file-rpc-request");
     var invokerFactory =
-        new VistalinkRpcInvokerFactory(new MacroProcessorFactory(List.of(new LocalDateMacro())));
-    var request = loadRequest();
-    ParallelRpcExecutor executor =
-        new ParallelRpcExecutor(
-            invokerFactory, new AllVistaNameResolver(VistalinkProperties.builder().build()));
-    RpcResponse response = executor.execute(request);
-    log.info(
-        "RESPONSE START\n{}\nRESPONSE END",
-        mapper.writerWithDefaultPrettyPrinter().writeValueAsString(response));
+        new MacroEnabledRpcInvokerFactoryV1(
+            new MacroProcessorFactory(List.of(new LocalDateMacro())));
+    var request = loadRequestV1();
+
+    var connectionDetails =
+        ConnectionDetailsParser.parse(request.vista())
+            .orElseThrow(() -> new ConnectionSpecRequired(request.vista()));
+    var result = invokerFactory.create(request, connectionDetails).invoke();
+    try {
+      var tree = mapper.readTree(result.response());
+      log.info(
+          "RESPONSE START\n{}\nRESPONSE END",
+          mapper.writerWithDefaultPrettyPrinter().writeValueAsString(tree));
+    } catch (Exception e) {
+      log.info(
+          "RESPONSE START\n{}\nRESPONSE END",
+          mapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
+    }
   }
 
   @SneakyThrows
-  RpcRequest loadRequest() {
+  RpcRequestV1 loadRequestV1() {
     String fileName = TestOptions.valueOf("test.file-rpc-request.file", "/request.json");
-    return mapper.readValue(new File(fileName), RpcRequest.class);
+    return mapper.readValue(new File(fileName), RpcRequestV1.class);
+  }
+
+  static class ConnectionSpecRequired extends RuntimeException {
+    ConnectionSpecRequired(String got) {
+      super("Expected hostname:port:divisionIen:timezone, got: " + got);
+    }
   }
 }

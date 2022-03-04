@@ -1,6 +1,6 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
-public class Patient {
-  public static final String FILE_NUMBER = "2";
-  public static final String INSURANCE_TYPE = "#.3121";
+public interface Patient {
+  String FILE_NUMBER = "2";
+  String INSURANCE_TYPE = "#.3121";
 }

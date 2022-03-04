@@ -1,12 +1,8 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
-import static gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGateway.deserialize;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toMap;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
-import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpc;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcRequest;
 import java.util.ArrayList;
@@ -28,17 +24,6 @@ public class LhsLighthouseRpcGatewayListManifest
   public static final String RPC_NAME = "LHS LIGHTHOUSE RPC GATEWAY";
 
   private static final String DEFAULT_RPC_CONTEXT = "LHS RPC CONTEXT";
-
-  @Override
-  public LhsLighthouseRpcGatewayResponse fromResults(List<RpcInvocationResult> results) {
-    var reader = new ObjectMapper();
-    return LhsLighthouseRpcGatewayResponse.builder()
-        .resultsByStation(
-            results.stream()
-                .filter(invocationResult -> invocationResult.error().isEmpty())
-                .collect(toMap(r -> r.vista(), r -> deserialize(reader, r.response()))))
-        .build();
-  }
 
   /**
    * Build an RPC Request using field names.
@@ -131,6 +116,7 @@ public class LhsLighthouseRpcGatewayListManifest
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<From> from() {
       if (from == null) {
         from = Optional.empty();
@@ -139,6 +125,7 @@ public class LhsLighthouseRpcGatewayListManifest
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> id() {
       if (id == null) {
         id = Optional.empty();
@@ -147,6 +134,7 @@ public class LhsLighthouseRpcGatewayListManifest
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> iens() {
       if (iens == null) {
         iens = Optional.empty();
@@ -155,6 +143,7 @@ public class LhsLighthouseRpcGatewayListManifest
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> index() {
       if (index == null) {
         index = Optional.empty();
@@ -163,6 +152,7 @@ public class LhsLighthouseRpcGatewayListManifest
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> number() {
       if (number == null) {
         number = Optional.empty();
@@ -171,6 +161,7 @@ public class LhsLighthouseRpcGatewayListManifest
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> part() {
       if (part == null) {
         part = Optional.empty();
@@ -179,6 +170,7 @@ public class LhsLighthouseRpcGatewayListManifest
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> screen() {
       if (screen == null) {
         screen = Optional.empty();

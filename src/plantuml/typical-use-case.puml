@@ -8,20 +8,13 @@ start
 :Convert request to RPC query;
 
 |Charon API|
-:Look up VistA instances for patient;
+:Invoke RPC;
 
-|MPI|
-:""GetCorrespondingIDs"";
+|VistA|
+:Return RPC results;
 
 |Charon API|
-while (For each VistA instance) is (vista)
-  :Invoke RPC;
-  |VistA|
-  :Return RPC results;
-  |Charon API|
-  :Store intermediate result;
-endwhile (done)
-:Combine results from each RPC;
+:Convert RPC results to invocation result;
 
 |Vista-Fhir-Query|
 :Translate results to Fhir response;

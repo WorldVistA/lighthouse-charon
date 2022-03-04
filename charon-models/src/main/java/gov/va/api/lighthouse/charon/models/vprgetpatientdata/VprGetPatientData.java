@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
-import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpc;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcRequest;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcResponse;
-import gov.va.api.lighthouse.charon.models.XmlResponseRpc;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,24 +32,6 @@ public class VprGetPatientData
   public static final String RPC_NAME = "VPR GET PATIENT DATA";
 
   private static final String DEFAULT_RPC_CONTEXT = "VPR APPLICATION PROXY";
-
-  /** Serialize the RPC results to a response object. */
-  @Override
-  public VprGetPatientData.Response fromResults(List<RpcInvocationResult> invocationResults) {
-    // TO-DO needs to handle different bad result behaviors (e.g. : ignore errors, ignore a
-    // percentage, or throw exception on errors.)
-    return Response.builder()
-        .resultsByStation(
-            invocationResults.stream()
-                .filter(invocationResult -> invocationResult.error().isEmpty())
-                .collect(
-                    Collectors.toMap(
-                        invocationResult -> invocationResult.vista(),
-                        invocationResult ->
-                            XmlResponseRpc.deserialize(
-                                invocationResult.response(), Response.Results.class))))
-        .build();
-  }
 
   /** All known VprGetPatientData domains. */
   public enum Domains {
@@ -124,6 +104,7 @@ public class VprGetPatientData
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> context() {
       if (context == null) {
         context = Optional.empty();
@@ -140,6 +121,7 @@ public class VprGetPatientData
     }
 
     /** Lazy getter. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> id() {
       if (id == null) {
         id = Optional.empty();
@@ -148,6 +130,7 @@ public class VprGetPatientData
     }
 
     /** Lazy getter. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> max() {
       if (max == null) {
         max = Optional.empty();
@@ -156,6 +139,7 @@ public class VprGetPatientData
     }
 
     /** Lazy getter. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> start() {
       if (start == null) {
         start = Optional.empty();
@@ -164,6 +148,7 @@ public class VprGetPatientData
     }
 
     /** Lazy getter. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> stop() {
       if (stop == null) {
         stop = Optional.empty();

@@ -60,6 +60,8 @@ public class FilemanDateTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
+        "",
+        "2790919.08280111",
         "27909191.082801",
         "aa70919.082801",
         "297bb19.082801",

@@ -6,15 +6,14 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import gov.va.api.health.autoconfig.logging.Redact;
-import gov.va.api.lighthouse.charon.api.RpcPrincipalLookup;
-import gov.va.api.lighthouse.charon.api.RpcRequest;
-import gov.va.api.lighthouse.charon.api.RpcResponse;
-import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalLookupV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcRequestV1;
 import gov.va.api.lighthouse.charon.models.lhscheckoptionaccess.LhsCheckOptionAccess;
+import gov.va.api.lighthouse.charon.models.lhscheckoptionaccess.LhsCheckOptionAccess.Request;
 import gov.va.api.lighthouse.charon.service.config.AuthorizationId;
 import gov.va.api.lighthouse.charon.service.core.EncryptedLogging;
+import gov.va.api.lighthouse.charon.service.v1.RpcControllerV1;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotBlank;
@@ -40,26 +39,27 @@ import org.springframework.web.bind.annotation.RestController;
     produces = {"application/json"})
 @Slf4j
 public class AuthorizationStatusController {
-  private final RpcExecutor rpcExecutor;
 
   private final AlternateAuthorizationStatusIds alternateIds;
 
   private final EncryptedLogging encryptedLogging;
 
-  private final RpcPrincipalLookup rpcPrincipalLookup;
+  private final RpcPrincipalLookupV1 rpcPrincipalLookup;
 
   private final String defaultMenuOption;
 
+  private final RpcControllerV1 controller;
+
   /** AuthorizationStatusController constructor with field validation. */
   public AuthorizationStatusController(
-      @Autowired RpcExecutor rpcExecutor,
+      @Autowired RpcControllerV1 controller,
       @Autowired AlternateAuthorizationStatusIds alternateIds,
       @Autowired EncryptedLogging encryptedLogging,
-      @Autowired RpcPrincipalLookup rpcPrincipalLookup,
+      @Autowired RpcPrincipalLookupV1 rpcPrincipalLookup,
       @org.springframework.beans.factory.annotation.Value(
               "${clinical-authorization-status.default-menu-option}")
           String defaultMenuOption) {
-    this.rpcExecutor = rpcExecutor;
+    this.controller = controller;
     this.alternateIds = alternateIds;
     this.encryptedLogging = encryptedLogging;
     this.rpcPrincipalLookup = rpcPrincipalLookup;
@@ -102,23 +102,23 @@ public class AuthorizationStatusController {
                   "Site: %s. Alternate site: %s.", unsafeSite, usableAuthorizationId.site())),
           400);
     }
-    RpcResponse response =
-        rpcExecutor.execute(
-            RpcRequest.builder()
+
+    var resultV1 =
+        controller.invoke(
+            RpcRequestV1.builder()
                 .rpc(
-                    LhsCheckOptionAccess.Request.builder()
+                    Request.builder()
                         .duz(usableAuthorizationId.duz())
                         .menuOption(menuOption)
                         .build()
                         .asDetails())
-                .target(
-                    RpcVistaTargets.builder()
-                        .include(List.of(usableAuthorizationId.site()))
-                        .build())
+                .vista(usableAuthorizationId.site())
                 .principal(principal.get())
                 .build());
     LhsCheckOptionAccess.Response typeSafeResult =
-        LhsCheckOptionAccess.create().fromResults(response.results());
+        LhsCheckOptionAccess.Response.builder()
+            .resultsByStation(Map.of(resultV1.vista(), resultV1.response()))
+            .build();
     return parseLhsCheckOptionAccessResponse(
         typeSafeResult.resultsByStation(), usableAuthorizationId.site());
   }

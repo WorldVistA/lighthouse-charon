@@ -4,8 +4,8 @@ import static java.util.stream.Collectors.joining;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.va.api.lighthouse.charon.api.RpcPrincipalLookup;
-import gov.va.api.lighthouse.charon.api.RpcPrincipals;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalLookupV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalsV1;
 import java.io.File;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -23,17 +23,17 @@ public class RpcPrincipalConfig {
 
   @Bean
   @SneakyThrows
-  RpcPrincipalLookup loadPrincipals(
+  RpcPrincipalLookupV1 loadPrincipals(
       @NonNull @Value("${charon.rpc-principals.file}") String principalsFile) {
-    RpcPrincipals rpcPrincipals =
+    RpcPrincipalsV1 rpcPrincipals =
         new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .readValue(new File(principalsFile), RpcPrincipals.class);
+            .readValue(new File(principalsFile), RpcPrincipalsV1.class);
     validate(rpcPrincipals, principalsFile);
-    return RpcPrincipalLookup.of(rpcPrincipals);
+    return RpcPrincipalLookupV1.of(rpcPrincipals);
   }
 
-  void validate(RpcPrincipals rpcPrincipals, String principalsFile) {
+  void validate(RpcPrincipalsV1 rpcPrincipals, String principalsFile) {
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
     var violations = validator.validate(rpcPrincipals);
     if (!violations.isEmpty()) {

@@ -1,9 +1,6 @@
 package gov.va.api.lighthouse.charon.models.lhscheckoptionaccess;
 
-import static java.util.stream.Collectors.toMap;
-
 import gov.va.api.lighthouse.charon.api.RpcDetails;
-import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpc;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcRequest;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcResponse;
@@ -22,16 +19,6 @@ public class LhsCheckOptionAccess
 
   public static final String RPC_NAME = "LHS CHECK OPTION ACCESS";
   private static final String RPC_CONTEXT = "LHS RPC CONTEXT";
-
-  @Override
-  public LhsCheckOptionAccess.Response fromResults(List<RpcInvocationResult> results) {
-    return Response.builder()
-        .resultsByStation(
-            results.stream()
-                .filter(result -> result.error().isEmpty())
-                .collect(toMap(RpcInvocationResult::vista, RpcInvocationResult::response)))
-        .build();
-  }
 
   /** Type safe Request class for invoking LhsCheckOptionAccess rpc. */
   @Builder
@@ -53,6 +40,7 @@ public class LhsCheckOptionAccess
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     private Optional<String> context() {
       if (context == null) {
         context = Optional.empty();

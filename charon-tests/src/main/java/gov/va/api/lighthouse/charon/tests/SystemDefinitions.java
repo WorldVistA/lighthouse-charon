@@ -5,8 +5,7 @@ import gov.va.api.health.sentinel.SentinelProperties;
 import gov.va.api.health.sentinel.ServiceDefinition;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.api.RpcDetails.Parameter;
-import gov.va.api.lighthouse.charon.api.RpcPrincipal;
-import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalV1;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -43,11 +42,10 @@ public class SystemDefinitions {
     String url = "https://blue.lab.lighthouse.va.gov";
     return SystemDefinition.builder()
         .authorizedClinicalUser(authorizedClinicalUser())
-        .charon(serviceDefinition("charon", url, 443, "/charon/"))
+        .charon(serviceDefinition(url, 443, "/charon/"))
         .clientKey(Optional.ofNullable(System.getProperty("client-key")))
         .testRpcs(rpcs())
         .avCodePrincipal(avCodeRpcPrincipal())
-        .testTargets(rpcTargets())
         .vistaSite(systemPropertyOrEnvVar("vista.site", "673"))
         .isVistaAvailable(isVistaAvailable())
         .build();
@@ -59,11 +57,10 @@ public class SystemDefinitions {
     // Static client-key is being passed here for other tests to use.
     return SystemDefinition.builder()
         .authorizedClinicalUser(authorizedClinicalUser())
-        .charon(serviceDefinition("charon", url, 8050, "/"))
+        .charon(serviceDefinition(url, 8050, "/charon/"))
         .clientKey(Optional.of(System.getProperty("client-key", "~shanktopus~")))
         .testRpcs(rpcs())
         .avCodePrincipal(avCodeRpcPrincipal())
-        .testTargets(rpcTargets())
         .vistaSite(systemPropertyOrEnvVar("vista.site", "673"))
         .isVistaAvailable(isVistaAvailable())
         .build();
@@ -73,11 +70,10 @@ public class SystemDefinitions {
     String url = "https://blue.production.lighthouse.va.gov";
     return SystemDefinition.builder()
         .authorizedClinicalUser(authorizedClinicalUser())
-        .charon(serviceDefinition("charon", url, 443, "/charon/"))
+        .charon(serviceDefinition(url, 443, "/charon/"))
         .clientKey(Optional.ofNullable(System.getProperty("client-key")))
         .testRpcs(rpcs())
         .avCodePrincipal(avCodeRpcPrincipal())
-        .testTargets(rpcTargets())
         .vistaSite(systemPropertyOrEnvVar("vista.site", "673"))
         .isVistaAvailable(isVistaAvailable())
         .build();
@@ -87,18 +83,13 @@ public class SystemDefinitions {
     String url = "https://blue.qa.lighthouse.va.gov";
     return SystemDefinition.builder()
         .authorizedClinicalUser(authorizedClinicalUser())
-        .charon(serviceDefinition("charon", url, 443, "/charon/"))
+        .charon(serviceDefinition(url, 443, "/charon/"))
         .clientKey(Optional.ofNullable(System.getProperty("client-key")))
         .testRpcs(rpcs())
         .avCodePrincipal(avCodeRpcPrincipal())
-        .testTargets(rpcTargets())
         .vistaSite(systemPropertyOrEnvVar("vista.site", "673"))
         .isVistaAvailable(isVistaAvailable())
         .build();
-  }
-
-  private static RpcVistaTargets rpcTargets() {
-    return RpcVistaTargets.builder().forPatient("ignored-for-now").build();
   }
 
   private static TestRpcs rpcs() {
@@ -128,12 +119,11 @@ public class SystemDefinitions {
         .build();
   }
 
-  private static ServiceDefinition serviceDefinition(
-      String name, String url, int port, String apiPath) {
+  private static ServiceDefinition serviceDefinition(String url, int port, String apiPath) {
     return ServiceDefinition.builder()
-        .url(SentinelProperties.optionUrl(name, url))
+        .url(SentinelProperties.optionUrl("charon", url))
         .port(port)
-        .apiPath(SentinelProperties.optionApiPath(name, apiPath))
+        .apiPath(SentinelProperties.optionApiPath("charon", apiPath))
         .accessToken(Optional::empty)
         .build();
   }
@@ -142,11 +132,10 @@ public class SystemDefinitions {
     String url = "https://blue.staging.lighthouse.va.gov";
     return SystemDefinition.builder()
         .authorizedClinicalUser(authorizedClinicalUser())
-        .charon(serviceDefinition("charon", url, 443, "/charon/"))
+        .charon(serviceDefinition(url, 443, "/charon/v1/"))
         .clientKey(Optional.ofNullable(System.getProperty("client-key")))
         .testRpcs(rpcs())
         .avCodePrincipal(avCodeRpcPrincipal())
-        .testTargets(rpcTargets())
         .vistaSite(systemPropertyOrEnvVar("vista.site", "673"))
         .isVistaAvailable(isVistaAvailable())
         .build();
@@ -156,11 +145,10 @@ public class SystemDefinitions {
     String url = "https://blue.staging-lab.lighthouse.va.gov";
     return SystemDefinition.builder()
         .authorizedClinicalUser(authorizedClinicalUser())
-        .charon(serviceDefinition("charon", url, 443, "/charon/"))
+        .charon(serviceDefinition(url, 443, "/charon/"))
         .clientKey(Optional.ofNullable(System.getProperty("client-key")))
         .testRpcs(rpcs())
         .avCodePrincipal(avCodeRpcPrincipal())
-        .testTargets(rpcTargets())
         .vistaSite(systemPropertyOrEnvVar("vista.site", "673"))
         .isVistaAvailable(isVistaAvailable())
         .build();
@@ -173,8 +161,8 @@ public class SystemDefinitions {
         .build();
   }
 
-  private RpcPrincipal avCodeRpcPrincipal() {
-    return RpcPrincipal.standardUserBuilder()
+  private RpcPrincipalV1 avCodeRpcPrincipal() {
+    return RpcPrincipalV1.forAvCodes()
         .accessCode(systemPropertyOrEnvVar("vista.standard-user.access-code", "not-set"))
         .verifyCode(systemPropertyOrEnvVar("vista.standard-user.verify-code", "not-set"))
         .build();

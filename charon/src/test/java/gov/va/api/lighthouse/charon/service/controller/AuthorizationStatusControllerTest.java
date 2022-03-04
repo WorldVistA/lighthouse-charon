@@ -5,18 +5,16 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.when;
 
 import gov.va.api.lighthouse.charon.api.RpcDetails;
-import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
-import gov.va.api.lighthouse.charon.api.RpcMetadata;
-import gov.va.api.lighthouse.charon.api.RpcPrincipal;
-import gov.va.api.lighthouse.charon.api.RpcPrincipalLookup;
-import gov.va.api.lighthouse.charon.api.RpcPrincipals;
-import gov.va.api.lighthouse.charon.api.RpcRequest;
-import gov.va.api.lighthouse.charon.api.RpcResponse;
-import gov.va.api.lighthouse.charon.api.RpcVistaTargets;
+import gov.va.api.lighthouse.charon.api.v1.RpcInvocationResultV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalLookupV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcPrincipalsV1;
+import gov.va.api.lighthouse.charon.api.v1.RpcRequestV1;
 import gov.va.api.lighthouse.charon.service.config.AuthorizationId;
 import gov.va.api.lighthouse.charon.service.config.EncyptedLoggingConfig.DisabledEncryptedLogging;
 import gov.va.api.lighthouse.charon.service.controller.AlternateAuthorizationStatusIds.AlternateAuthorizationStatusIdsDisabled;
 import gov.va.api.lighthouse.charon.service.controller.AlternateAuthorizationStatusIds.AlternateAuthorizationStatusIdsEnabled;
+import gov.va.api.lighthouse.charon.service.v1.RpcControllerV1;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +31,7 @@ import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthorizationStatusControllerTest {
-  @Mock ParallelRpcExecutor rpcExecutor;
+  @Mock RpcControllerV1 rpcExecutor;
 
   private static AuthorizationStatusController.ClinicalAuthorizationResponse expectedBodyOf(
       String status, String value) {
@@ -69,24 +67,20 @@ public class AuthorizationStatusControllerTest {
 
   @Test
   void clinicalAuthorization() {
-    when(rpcExecutor.execute(
+    when(rpcExecutor.invoke(
             rpcRequest(
-                List.of("publicSite1"),
+                "publicSite1",
                 rpcPrincipal("apu5555", "ac1234", "vc9876"),
                 rpcDetails("LHS CHECK OPTION ACCESS", "LHS RPC CONTEXT", "DUZ", "MENUOPTION"))))
-        .thenReturn(
-            rpcResponse(
-                RpcResponse.Status.OK, List.of(rpcInvocationResult("1^11", "publicSite1"))));
+        .thenReturn(rpcInvocationResult("1^11", "publicSite1"));
     assertThat(controller().clinicalAuthorization("publicSite1", "DUZ", "MENUOPTION"))
         .isEqualTo(responseOf(200, "ok", "1"));
-    when(rpcExecutor.execute(
+    when(rpcExecutor.invoke(
             rpcRequest(
-                List.of("publicSite2"),
+                "publicSite2",
                 rpcPrincipal("apu5555", "ac1234", "vc9876"),
                 rpcDetails("LHS CHECK OPTION ACCESS", "LHS RPC CONTEXT", "DUZ", "defaultOption"))))
-        .thenReturn(
-            rpcResponse(
-                RpcResponse.Status.OK, List.of(rpcInvocationResult("1^11", "publicSite2"))));
+        .thenReturn(rpcInvocationResult("1^11", "publicSite2"));
     assertThat(controller().clinicalAuthorization("publicSite2", "DUZ", null))
         .isEqualTo(responseOf(200, "ok", "1"));
     assertThat(controller().clinicalAuthorization("publicSite2", "DUZ", ""))
@@ -103,28 +97,24 @@ public class AuthorizationStatusControllerTest {
 
   @Test
   void clinicalAuthorizationWithAlternateIds() {
-    when(rpcExecutor.execute(
+    when(rpcExecutor.invoke(
             rpcRequest(
-                List.of("privateSite1"),
+                "privateSite1",
                 rpcPrincipal("apu5555", "ac1234", "vc9876"),
                 rpcDetails(
                     "LHS CHECK OPTION ACCESS", "LHS RPC CONTEXT", "privateDuz1", "MENUOPTION"))))
-        .thenReturn(
-            rpcResponse(
-                RpcResponse.Status.OK, List.of(rpcInvocationResult("1^11", "privateSite1"))));
+        .thenReturn(rpcInvocationResult("1^11", "privateSite1"));
     assertThat(
             controllerWithAlternateIds()
                 .clinicalAuthorization("publicSite1", "publicDuz1", "MENUOPTION"))
         .isEqualTo(responseOf(200, "ok", "1"));
-    when(rpcExecutor.execute(
+    when(rpcExecutor.invoke(
             rpcRequest(
-                List.of("privateSite2"),
+                "privateSite2",
                 rpcPrincipal("apu5555", "ac1234", "vc9876"),
                 rpcDetails(
                     "LHS CHECK OPTION ACCESS", "LHS RPC CONTEXT", "privateDuz2", "defaultOption"))))
-        .thenReturn(
-            rpcResponse(
-                RpcResponse.Status.OK, List.of(rpcInvocationResult("2^11", "privateSite2"))));
+        .thenReturn(rpcInvocationResult("2^11", "privateSite2"));
     assertThat(
             controllerWithAlternateIds().clinicalAuthorization("publicSite2", "publicDuz2", null))
         .isEqualTo(responseOf(200, "ok", "2"));
@@ -133,7 +123,7 @@ public class AuthorizationStatusControllerTest {
   AuthorizationStatusController controller() {
     return controller(
         new AlternateAuthorizationStatusIdsDisabled(),
-        RpcPrincipals.Codes.builder()
+        RpcPrincipalsV1.Codes.builder()
             .sites(List.of("publicSite1", "publicSite2"))
             .accessCode("ac1234")
             .verifyCode("vc9876")
@@ -141,16 +131,17 @@ public class AuthorizationStatusControllerTest {
   }
 
   private AuthorizationStatusController controller(
-      AlternateAuthorizationStatusIds alternateAuthorizationStatusIds, RpcPrincipals.Codes codes) {
+      AlternateAuthorizationStatusIds alternateAuthorizationStatusIds,
+      RpcPrincipalsV1.Codes codes) {
     return new AuthorizationStatusController(
         rpcExecutor,
         alternateAuthorizationStatusIds,
         new DisabledEncryptedLogging(),
-        RpcPrincipalLookup.of(
-            RpcPrincipals.builder()
+        RpcPrincipalLookupV1.of(
+            RpcPrincipalsV1.builder()
                 .entries(
                     List.of(
-                        RpcPrincipals.PrincipalEntry.builder()
+                        RpcPrincipalsV1.PrincipalEntry.builder()
                             .rpcNames(List.of("LHS CHECK OPTION ACCESS"))
                             .applicationProxyUser("apu5555")
                             .codes(List.of(codes))
@@ -167,7 +158,7 @@ public class AuthorizationStatusControllerTest {
                 AuthorizationId.of("privateDuz1@privateSite1"),
                 AuthorizationId.of("publicDuz2@publicSite2"),
                 AuthorizationId.of("privateDuz2@privateSite2"))),
-        RpcPrincipals.Codes.builder()
+        RpcPrincipalsV1.Codes.builder()
             .sites(List.of("privateSite1", "privateSite2"))
             .accessCode("ac1234")
             .verifyCode("vc9876")
@@ -206,31 +197,23 @@ public class AuthorizationStatusControllerTest {
         .build();
   }
 
-  RpcInvocationResult rpcInvocationResult(String responseValue, String site) {
-    return RpcInvocationResult.builder()
+  RpcInvocationResultV1 rpcInvocationResult(String responseValue, String site) {
+    return RpcInvocationResultV1.builder()
         .response(responseValue)
         .vista(site)
-        .metadata(RpcMetadata.builder().timezone("America/New_York").build())
+        .timezone("America/New_York")
         .build();
   }
 
-  RpcPrincipal rpcPrincipal(String applicationProxyUser, String accessCode, String verifyCode) {
-    return RpcPrincipal.builder()
+  RpcPrincipalV1 rpcPrincipal(String applicationProxyUser, String accessCode, String verifyCode) {
+    return RpcPrincipalV1.builder()
         .applicationProxyUser(applicationProxyUser)
         .accessCode(accessCode)
         .verifyCode(verifyCode)
         .build();
   }
 
-  RpcRequest rpcRequest(List<String> sites, RpcPrincipal principal, RpcDetails details) {
-    return RpcRequest.builder()
-        .target(RpcVistaTargets.builder().include(sites).build())
-        .principal(principal)
-        .rpc(details)
-        .build();
-  }
-
-  RpcResponse rpcResponse(RpcResponse.Status status, List<RpcInvocationResult> results) {
-    return RpcResponse.builder().status(status).results(results).build();
+  RpcRequestV1 rpcRequest(String site, RpcPrincipalV1 principal, RpcDetails details) {
+    return RpcRequestV1.builder().vista(site).principal(principal).rpc(details).build();
   }
 }

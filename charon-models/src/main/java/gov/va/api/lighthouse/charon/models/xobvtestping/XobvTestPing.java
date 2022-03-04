@@ -1,13 +1,9 @@
 package gov.va.api.lighthouse.charon.models.xobvtestping;
 
-import static java.util.stream.Collectors.toMap;
-
 import gov.va.api.lighthouse.charon.api.RpcDetails;
-import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpc;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcRequest;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcResponse;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.Builder;
@@ -21,16 +17,6 @@ public class XobvTestPing implements TypeSafeRpc<XobvTestPing.Request, XobvTestP
   public static final String RPC_NAME = "XOBV TEST PING";
 
   private static final String DEFAULT_RPC_CONTEXT = "XOBV VISTALINK TESTER";
-
-  @Override
-  public TypeSafeRpcResponse fromResults(List<RpcInvocationResult> results) {
-    return XobvTestPing.Response.builder()
-        .resultsByStation(
-            results.stream()
-                .filter(result -> result.error().isEmpty())
-                .collect(toMap(RpcInvocationResult::vista, RpcInvocationResult::response)))
-        .build();
-  }
 
   /** Type safe Request class for XobvTestPing requests. */
   @Builder
@@ -47,6 +33,7 @@ public class XobvTestPing implements TypeSafeRpc<XobvTestPing.Request, XobvTestP
     }
 
     /** Lazy Initializer. */
+    @SuppressWarnings("OptionalAssignedToNull")
     Optional<String> context() {
       if (context == null) {
         context = Optional.empty();

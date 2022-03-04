@@ -1,11 +1,6 @@
 package gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway;
 
-import static gov.va.api.lighthouse.charon.models.lhslighthouserpcgateway.LhsLighthouseRpcGateway.deserialize;
-import static java.util.stream.Collectors.toMap;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.lighthouse.charon.api.RpcDetails;
-import gov.va.api.lighthouse.charon.api.RpcInvocationResult;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpc;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcRequest;
 import java.util.ArrayList;
@@ -24,17 +19,6 @@ public class LhsLighthouseRpcGatewayCoverageSearch
 
   private static final String DEFAULT_RPC_CONTEXT = "LHS RPC CONTEXT";
 
-  @Override
-  public LhsLighthouseRpcGatewayResponse fromResults(List<RpcInvocationResult> results) {
-    ObjectMapper reader = new ObjectMapper();
-    return LhsLighthouseRpcGatewayResponse.builder()
-        .resultsByStation(
-            results.stream()
-                .filter(invocationResult -> invocationResult.error().isEmpty())
-                .collect(toMap(r -> r.vista(), r -> deserialize(reader, r.response()))))
-        .build();
-  }
-
   /** Build an RPC Request using field names. */
   @Data
   @Builder
@@ -48,7 +32,7 @@ public class LhsLighthouseRpcGatewayCoverageSearch
       List<String> parameters = new ArrayList<>(3);
       parameters.add("debugmode^" + debugMode());
       parameters.add("api^search^coverage");
-      parameters.add("lhsdfn^" + id().toString());
+      parameters.add("lhsdfn^" + id());
       return RpcDetails.builder()
           .name(RPC_NAME)
           .context(DEFAULT_RPC_CONTEXT)

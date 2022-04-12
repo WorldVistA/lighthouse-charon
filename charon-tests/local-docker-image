@@ -34,10 +34,13 @@ run() {
   docker run \
     --rm \
     --network="host" \
-    -e K8S_LOAD_BALANCER=$THIS_MACHINE \
-    -e K8S_ENVIRONMENT=${ENV:-local} \
-    -e SENTINEL_ENV=${ENV:-local} \
+    -e DEPLOYMENT_ENVIRONMENT=${ENV:-local} \
+    -e DEPLOYMENT_TEST_PROTOCOL=http \
+    -e DEPLOYMENT_TEST_HOST=${THIS_MACHINE} \
+    -e DEPLOYMENT_TEST_PORT=8050 \
     -e CLIENT_KEY="${CLIENT_KEY:-hello}" \
+    -e VISTA_STANDARD_USER_ACCESS_CODE=${VISTA_ACCESS_CODE:-secret} \
+    -e VISTA_STANDARD_USER_VERIFY_CODE=${VISTA_VERIFY_CODE:-secret} \
      vasdvp/lighthouse-charon-tests:latest $@
 }
 

@@ -3,24 +3,29 @@ set -euo pipefail
 # =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=
 
 init() {
-  test -n "${CLIENT_KEY}"
-  test -n "${K8S_ENVIRONMENT}"
-  test -n "${VISTA_ACCESS_CODE}"
-  test -n "${VISTA_VERIFY_CODE}"
-
   if [ -z "${SENTINEL_BASE_DIR:-}" ]; then SENTINEL_BASE_DIR=/sentinel; fi
   cd $SENTINEL_BASE_DIR
 
-  SYSTEM_PROPERTIES=()
+  # Use the defaults unless the deployment configs are set
+  if [ -n "${DEPLOYMENT_ENVIRONMENT:-}" ]; then SENTINEL_ENV="${DEPLOYMENT_ENVIRONMENT}"; fi
 
-  if [ -z "${SENTINEL_ENV:-}" ]; then SENTINEL_ENV=$K8S_ENVIRONMENT; fi
-  if [ -z "${CHARON_URL:-}" ]; then CHARON_URL=https://$K8S_LOAD_BALANCER; fi
+  if [ -n "${DEPLOYMENT_TEST_HOST:-}" ]
+  then
+    test -n "${DEPLOYMENT_TEST_PROTOCOL}"
+    CHARON_URL="${DEPLOYMENT_TEST_PROTOCOL}://${DEPLOYMENT_TEST_HOST}"
+  fi
+
+  if [ -n "${DEPLOYMENT_TEST_PORT:-}" ]; then CHARON_PORT=${DEPLOYMENT_TEST_PORT}; fi
+
   if [ -z "${VISTA_AVAILABLE:-}" ]; then VISTA_AVAILABLE="true"; fi
+
+  test -n "${SENTINEL_ENV}"
+  SYSTEM_PROPERTIES=("-Dsentinel=${SENTINEL_ENV}")
 }
 
 main() {
-  addToSystemProperties "sentinel" "${SENTINEL_ENV}"
-  addToSystemProperties "sentinel.charon.url" "${CHARON_URL}"
+  if [ -n "${CHARON_URL}" ]; then addToSystemProperties "sentinel.charon.url" "${CHARON_URL}"; fi
+  if [ -n "${CHARON_PORT}" ]; then addToSystemProperties "sentinel.charon.port" "${CHARON_PORT}"; fi
   addToSystemProperties "client-key" "${CLIENT_KEY}"
   addToSystemProperties "vista.standard-user.access-code" "${VISTA_STANDARD_USER_ACCESS_CODE:-${VISTA_ACCESS_CODE}}"
   addToSystemProperties "vista.standard-user.verify-code" "${VISTA_STANDARD_USER_VERIFY_CODE:-${VISTA_VERIFY_CODE}}"

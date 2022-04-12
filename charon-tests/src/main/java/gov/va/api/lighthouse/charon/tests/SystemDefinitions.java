@@ -121,12 +121,12 @@ public class SystemDefinitions {
 
   private static ServiceDefinition serviceDefinition(String url, int port, String apiPath) {
     return SentinelProperties.forName("charon")
-            .accessToken(Optional::empty)
-            .defaultUrl(url)
-            .defaultPort(port)
-            .defaultApiPath(apiPath)
-            .build()
-            .serviceDefinition();
+        .accessToken(Optional::empty)
+        .defaultUrl(url)
+        .defaultPort(port)
+        .defaultApiPath(apiPath)
+        .build()
+        .serviceDefinition();
   }
 
   private static SystemDefinition staging() {

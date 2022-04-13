@@ -4,7 +4,7 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>health-apis-parent</artifactId>
-    <version>9.0.8</version>
+    <version>10.0.0</version>
     <relativePath/>
   </parent>
   <groupId>gov.va.api.lighthouse</groupId>

@@ -26,7 +26,7 @@ public class VprGetPatientDataSamples {
                   RpcDetails.Parameter.builder().string("2970919.082701").build(),
                   RpcDetails.Parameter.builder().string("1").build(),
                   RpcDetails.Parameter.builder().string("32071").build(),
-                  RpcDetails.Parameter.builder().array(Collections.emptyList()).build()))
+                  RpcDetails.Parameter.builder().namedArray(Collections.emptyMap()).build()))
           .build();
     }
 
@@ -38,7 +38,7 @@ public class VprGetPatientDataSamples {
           .stop(Optional.of("2970919.082701"))
           .max(Optional.of("1"))
           .id(Optional.of("32071"))
-          .filter(List.of())
+          .filter(Map.of())
           .build();
     }
   }

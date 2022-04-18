@@ -8,7 +8,7 @@ import gov.va.api.lighthouse.charon.api.RpcDetails;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpc;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcRequest;
 import gov.va.api.lighthouse.charon.models.TypeSafeRpcResponse;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +77,7 @@ public class VprGetPatientData
 
     private Optional<String> id;
 
-    private List<String> filter;
+    private Map<String, String> filter;
 
     /** Build RpcDetails out of the request. */
     @Override
@@ -99,7 +99,7 @@ public class VprGetPatientData
                   RpcDetails.Parameter.builder().string(stop().orElse("")).build(),
                   RpcDetails.Parameter.builder().string(max().orElse("")).build(),
                   RpcDetails.Parameter.builder().string(id().orElse("")).build(),
-                  RpcDetails.Parameter.builder().array(filter()).build()))
+                  RpcDetails.Parameter.builder().namedArray(filter()).build()))
           .build();
     }
 
@@ -113,9 +113,9 @@ public class VprGetPatientData
     }
 
     /** Lazy getter. */
-    List<String> filter() {
+    Map<String, String> filter() {
       if (filter == null) {
-        filter = new ArrayList<>();
+        filter = new HashMap<>();
       }
       return filter;
     }

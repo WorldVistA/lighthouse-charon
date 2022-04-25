@@ -30,7 +30,11 @@ public class TestClients {
   }
 
   ExpectedResponse rpcRequest(String path, RpcRequestV1 body) {
-    log.info("POST {} {}", path, body);
+    log.info(
+        "POST {} to site {} with details {} (Principal Values Redacted)",
+        path,
+        body.vista(),
+        body.rpc());
     return TestClients.charon().post(headers(), path, body);
   }
 }

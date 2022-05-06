@@ -5,12 +5,15 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>health-apis-parent</artifactId>
-    <version>10.0.1</version>
+    <version>11.0.0</version>
   </parent>
   <groupId>gov.va.api.lighthouse</groupId>
   <artifactId>charon-parent</artifactId>
   <version>6.0.6-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <properties>
+    <github.repository-name>lighthouse-charon</github.repository-name>
+  </properties>
   <modules>
     <module>charon-vista-configuration</module>
     <module>charon-api-v1</module>

@@ -4,13 +4,16 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>api-starter</artifactId>
-    <version>10.0.1</version>
+    <version>11.0.0</version>
     <relativePath/>
   </parent>
   <groupId>gov.va.api.lighthouse</groupId>
   <artifactId>charon-api-v1</artifactId>
   <version>6.0.6-SNAPSHOT</version>
   <packaging>jar</packaging>
+  <properties>
+    <github.repository-name>lighthouse-charon</github.repository-name>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.projectlombok</groupId>

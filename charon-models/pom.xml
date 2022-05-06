@@ -4,7 +4,7 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>health-apis-parent</artifactId>
-    <version>10.0.1</version>
+    <version>11.0.0</version>
     <relativePath/>
   </parent>
   <groupId>gov.va.api.lighthouse</groupId>
@@ -12,6 +12,7 @@
   <version>6.0.6-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
+    <github.repository-name>lighthouse-charon</github.repository-name>
     <checkstyle.suppressions.location>${project.basedir}/checkstyle-suppressions.xml</checkstyle.suppressions.location>
   </properties>
   <dependencies>

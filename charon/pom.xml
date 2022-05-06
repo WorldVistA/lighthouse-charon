@@ -9,13 +9,13 @@
   </parent>
   <groupId>gov.va.api.lighthouse</groupId>
   <artifactId>charon</artifactId>
-  <version>6.0.6-SNAPSHOT</version>
+  <version>6.0.6</version>
   <packaging>jar</packaging>
   <properties>
     <github.repository-name>lighthouse-charon</github.repository-name>
     <docker.imageName>lighthouse-${project.artifactId}</docker.imageName>
     <jacoco.coverage>0.67</jacoco.coverage>
-    <talos.version>3.0.0</talos.version>
+    <talos.version>3.0.2</talos.version>
   </properties>
   <dependencies>
     <dependency>
